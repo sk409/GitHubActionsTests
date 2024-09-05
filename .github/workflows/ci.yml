@@ -12,7 +12,7 @@ jobs:
         run: |
           git log --oneline --graph --decorate --all
 
-          latest_main_run_commit_hash=$(git rev-parse HEAD^2)
+          latest_main_run_commit_hash=$(git rev-parse HEAD)
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
