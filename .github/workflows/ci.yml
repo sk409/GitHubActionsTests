@@ -2,8 +2,16 @@ name: Status Check
 on: push
 
 jobs:
-  check:
+  check1:
     runs-on: ubuntu-latest
+
     steps:
-      - name: test
-        run: exit 1
+      - name: something test1
+        run: exit 0
+
+  check2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: something test2
+        run: exit 0
