@@ -8,7 +8,7 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: test
-        run: echo "test"
+        run: exit 1
       - uses: actions/checkout@v4
       - name: set sub workflow status pending
         run: |
