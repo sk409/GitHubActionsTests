@@ -7,6 +7,7 @@ jobs:
     steps:
       - name: test
         run: echo "test"
+      - uses: actions/checkout@v4
       - name: set sub workflow status pending
         run: |
           git log --oneline --graph --decorate --all
