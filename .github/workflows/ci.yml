@@ -1,15 +1,21 @@
 name: Status Check
-on: push
+on:
+  push:
+    branches:
+      - '**'
+      - '!master'
 
 jobs:
-  check:
+  check1:
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
-      - name: test
+      - name: something test1
         run: exit 1
-      - uses: actions/checkout@v4
-      - name: set sub workflow status pending
-        run: |
-          git log --oneline --graph --decorate --all
+
+  check2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: something test2
+        run: exit 0
