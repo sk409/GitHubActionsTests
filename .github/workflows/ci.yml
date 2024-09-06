@@ -27,10 +27,16 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-              const sha = core.getInput('sha', { required: true })
+              const pr = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: 5
+              })
+              console.log('PR Head sha: ' + pr.data.head.sha)
+              core.setOutput('sha', pr.data.head.sha)
               github.rest.checks.create({
                 name: 'run tests',
-                head_sha: sha,
+                head_sha: pr.data.head.sha,
                 status: 'completed',
                 conclusion: '${{ steps.ut.outcome }}',
                 output: {
