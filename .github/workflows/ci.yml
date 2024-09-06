@@ -11,7 +11,7 @@ jobs:
     - uses: LouisBrunner/checks-action@v1.1.1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        name: staging-test
+        name: run tests
         status: queued
   ci:
     if: github.event_name == 'workflow_dispatch'
