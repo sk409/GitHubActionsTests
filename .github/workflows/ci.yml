@@ -1,8 +1,11 @@
 name: Status Check
-on: workflow_dispatch
+on:
+  issue_comment:
+    types: [created]
 
 jobs:
   ci:
+    if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
       - name: something test1
