@@ -27,7 +27,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-              github.checks.create({
+              github.rest.checks.create({
                 name: 'run tests',
                 head_sha: $GITHUB_SHA,
                 status: 'completed',
