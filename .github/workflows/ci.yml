@@ -9,28 +9,28 @@ jobs:
       - name: something test1
         id: ut
         run: exit 0
-      # - name: get sha from PR number and save output
-      #   id: get-sha
-      #   uses: actions/github-script@v7
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     script: |
-      #       console.log('PR number: ' + ${{ github.event.issue.number }})
-      #       const pr = await github.pulls.get({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         pull_number: ${{ github.event.issue.number }}
-      #       })
-      #       console.log('PR Head sha: ' + pr.data.head.sha)
-      #       core.setOutput('sha', pr.data.head.sha)
+      - name: get sha from PR number and save output
+        id: get-sha
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: 5
+            })
+            console.log('PR Head sha: ' + pr.data.head.sha)
+            core.setOutput('sha', pr.data.head.sha)
       - name: ubuntu-latest 
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+              const sha = core.getInput('sha', { required: true })
               github.rest.checks.create({
                 name: 'run tests',
-                head_sha: '${{ github.sha }}',
+                head_sha: sha,
                 status: 'completed',
                 conclusion: '${{ steps.ut.outcome }}',
                 output: {
