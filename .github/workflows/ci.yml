@@ -2,16 +2,40 @@ name: Status Check
 on: workflow_dispatch
 
 jobs:
-  check1:
+  ci:
     runs-on: ubuntu-latest
-
     steps:
       - name: something test1
+        id: ut
         run: exit 0
-
-  check2:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: something test2
-        run: exit 0
+      # - name: get sha from PR number and save output
+      #   id: get-sha
+      #   uses: actions/github-script@v7
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       console.log('PR number: ' + ${{ github.event.issue.number }})
+      #       const pr = await github.pulls.get({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         pull_number: ${{ github.event.issue.number }}
+      #       })
+      #       console.log('PR Head sha: ' + pr.data.head.sha)
+      #       core.setOutput('sha', pr.data.head.sha)
+      - name: ubuntu-latest 
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+              github.checks.create({
+                name: 'run tests',
+                head_sha: $GITHUB_SHA,
+                status: 'completed',
+                conclusion: '${{ steps.ut.outcome }}',
+                output: {
+                  title: 'Run tests',
+                  summary: 'Results: ${{ steps.ut.outcome }}'
+                },
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              })
