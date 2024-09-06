@@ -9,12 +9,36 @@ jobs:
       - name: something test1
         id: ut
         run: exit 0
+      - name: Return issues
+        uses: actions/github-script@v2
+        id: get-staging-test-check-runs-id
+        with:
+          script: |
+            // github-scriptでnameがstaging-testのCheck RunsのIDの一覧を新順で取得する
+            const list = await github.checks.listForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'feature/pr4',
+                check_name: 'run tests',
+                filter: 'latest'
+            });
+            return list.data.check_runs[0].id;
+          result-encoding: string
+      # repository_dispatchの結果を最新のCheck Runsに反映する
       - uses: LouisBrunner/checks-action@v1.1.1
+        # if: github.event_name == 'repository_dispatch'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: run tests
+          check_id: ${{steps.get-staging-test-check-runs-id.outputs.result}}
           status: completed
+          # successならばsuccessにし、それ以外はfailureにする
           conclusion: success
+      # - uses: LouisBrunner/checks-action@v1.1.1
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     name: run tests
+      #     status: completed
+      #     conclusion: success
       # - name: get sha from PR number and save output
       #   id: get-sha
       #   uses: actions/github-script@v7
