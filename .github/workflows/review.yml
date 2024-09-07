@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  in_progress:
+  start:
     runs-on: ubuntu-latest
     steps:
       - name: id
