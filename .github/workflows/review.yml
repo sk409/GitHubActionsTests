@@ -30,11 +30,13 @@ jobs:
     steps:
       - name: lint
         run: exit 0
-  ut:
-    runs-on: ubuntu-latest
+  iOS15:
+    runs-on: macos-14
     steps:
+      - name: checkout
+        uses: actions/checkout@v4
       - name: ut
-        run: exit 0
+        run: xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination 'platform=iOS Simulator,name=iPhone SE (1st generation),OS=15.0' test
   update:
     runs-on: ubuntu-latest
     needs: [in_progress, lint, ut]
@@ -56,6 +58,6 @@ jobs:
               repo: context.repo.repo,
               check_run_id: id,
               status: 'completed',
-              conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.ut.result == 'success' }} ? 'success' : 'failure'
+              conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.iOS15.result == 'success' }} ? 'success' : 'failure'
             })
     
