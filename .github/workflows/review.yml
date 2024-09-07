@@ -19,7 +19,7 @@ jobs:
               ref: '${{ github.ref }}',
               check_name: 'review',
               filter: 'latest'
-            }).data.check_runs;
+            }).data;
             console.log(list);
             // .data.check_runs[0].id
             github.rest.checks.update({
