@@ -50,6 +50,7 @@ jobs:
               check_name: 'review',
               filter: 'latest'
             });
+            console.log(${{needs}})
             const id = list.data.check_runs[0].id;
             github.rest.checks.update({
               owner: context.repo.owner,
