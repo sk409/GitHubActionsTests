@@ -50,13 +50,12 @@ jobs:
               check_name: 'review',
               filter: 'latest'
             });
-            console.log(${{needs}})
             const id = list.data.check_runs[0].id;
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               check_run_id: id,
               status: 'completed',
-              conclusion: ${{ needs.lint.outcome == 'success' }} && ${{ needs.ut.outcome == 'success' }} ? 'success' : 'failure'
+              conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.ut.result == 'success' }} ? 'success' : 'failure'
             })
     
