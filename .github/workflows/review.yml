@@ -40,7 +40,6 @@ jobs:
       - name: Install simulators
         run: |
           sudo xcodes runtimes download "iOS 15.0"
-          ls ~/Downloads | grep 15
           xcrun simctl runtime add "~/Downloads/com.apple.pkg.iPhoneSimulatorSDK15_0-15.0.1.1633542405.dmg"
       - name: ut
         run: xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination 'platform=iOS Simulator,name=iPhone SE (1st generation),OS=15.0' test
