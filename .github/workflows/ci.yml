@@ -24,6 +24,29 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
+      - name: id
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const list = await github.rest.checks.listForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: '${{ github.ref }}',
+              check_name: 'review',
+              filter: 'latest'
+            });
+            return list.data.check_runs[0].id;
+          result-encoding: string
+      - name: in_progress
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_run_id: ${{ steps.id.outputs.result }},
+              status: 'in_progress'
+            })
       - name: lint
         id: lint
         continue-on-error: true
@@ -35,18 +58,10 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            const list = await github.rest.checks.listForRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: '${{ github.ref }}',
-              check_name: 'review',
-              filter: 'latest'
-            });
-            const id = list.data.check_runs[0].id;
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: id,
+              check_run_id: ${{ steps.id.outputs.result }},
               status: 'completed',
               conclusion: ${{ steps.lint.outcome == 'success' }} && ${{ steps.ut.outcome == 'success' }} ? 'success' : 'failure'
             })
