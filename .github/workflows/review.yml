@@ -39,7 +39,9 @@ jobs:
         run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
       - name: Install simulators
         run: |
-          sudo xcodes runtimes install --keep-archive 'iOS 15.5'
+          # sudo xcodes runtimes install --keep-archive 'iOS 15.5'
+          gem install xcode-install
+          xcversion simulators --install='iOS 15.0'
       - name: ut
         run: xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination 'platform=iOS Simulator,name=iPhone SE (1st generation),OS=15.0' test
   update:
