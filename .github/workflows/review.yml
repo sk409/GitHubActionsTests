@@ -35,11 +35,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Select Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
       - name: Install simulators
         run: |
           sudo xcodes runtimes download "iOS 15.0"
+          sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
           xcodebuild -runFirstLaunch
           xcrun simctl runtime add "~/Downloads/com.apple.pkg.iPhoneSimulatorSDK15_0-15.0.1.1633542405.dmg"
       - name: ut
