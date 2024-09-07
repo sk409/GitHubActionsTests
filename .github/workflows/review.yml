@@ -39,7 +39,7 @@ jobs:
         run: xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination 'platform=iOS Simulator,name=iPhone SE (1st generation),OS=15.0' test
   update:
     runs-on: ubuntu-latest
-    needs: [in_progress, lint, ut]
+    needs: [in_progress, lint, iOS15]
     steps:
       - name: update
         uses: actions/github-script@v7
