@@ -43,5 +43,5 @@ jobs:
               repo: context.repo.repo,
               check_run_id: id,
               status: 'completed',
-              conslusion: 'success'
+              conclusion: 'success'
             })
