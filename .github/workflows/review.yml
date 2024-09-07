@@ -1,0 +1,26 @@
+name: Review
+on:
+  workflow_dispatch:
+
+jobs:
+  ci:
+    name: review
+    runs-on: ubuntu-latest
+    steps:
+      - name: something test1
+        id: ut
+        run: exit 0
+      - uses: actions/github-script@v7
+        script: |
+          const id = await github.checks.listForRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: ${{ github.ref }},
+            check_name: 'review',
+            filter: 'latest'
+          }).data.check_runs[0].id
+          github.checks.update({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            check_run_id: id
+          })
