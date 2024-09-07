@@ -41,6 +41,6 @@ jobs:
             console.log(id)
             github.rest.checks.update({
               owner: context.repo.owner,
-              repo: context.repo.repo,
-              check_run_id: id
+              repo: context.repo.repo//,
+              //check_run_id: id
             })
