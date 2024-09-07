@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci:
+  review:
     name: review
     runs-on: ubuntu-latest
     steps:
