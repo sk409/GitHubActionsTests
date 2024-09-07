@@ -37,10 +37,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Install simulators
         run: |
-          sudo xcodes runtimes download "iOS 15.0"
           sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
           xcodebuild -runFirstLaunch
-          xcrun simctl delete $(xcrun simctl list devices | grep -E -o -i "([0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12})")
+          for device in "$(xcrun simctl list devices | grep -E -o -i "([0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12})")" ; do
+              xcrun simctl delete $device
+          done
+          sudo xcodes runtimes download "iOS 15.0"
           xcrun simctl runtime add "~/Downloads/com.apple.pkg.iPhoneSimulatorSDK15_0-15.0.1.1633542405.dmg"
       - name: ut
         run: xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination 'platform=iOS Simulator,name=iPhone SE (1st generation),OS=15.0' test
