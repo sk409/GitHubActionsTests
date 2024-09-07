@@ -33,10 +33,14 @@ jobs:
   iOS15:
     runs-on: macos-14
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v4
-      - name: xcode-select
+      - name: Select Xcode version
         run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
+      - name: Install simulators
+        run: |
+          xcversion simulators --install='iOS 15.0'
+          ls -d /Library/Developer/CoreSimulator/Profiles/Runtimes/* | xargs -Ipath du -s -m "path"
       - name: ut
         run: xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination 'platform=iOS Simulator,name=iPhone SE (1st generation),OS=15.0' test
   update:
