@@ -39,9 +39,15 @@ jobs:
         run: |
           rm -rf /Applications/Xcode_16.1_beta.app
           rm -rf /Applications/Xcode_16_beta_6.app
+          rm -rf /Applications/Xcode_15.4.app
+          rm -rf /Applications/Xcode_15.2.app
+          rm -rf /Applications/Xcode_15.1.app
+          rm -rf /Applications/Xcode_15.0.1.app
+          rm -rf /Applications/Xcode_14.3.1.app
           sudo xcodes runtimes download "iOS 15.0"
           sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
           xcodebuild -runFirstLaunch
+          echo "ADDDDDDDD"
           xcrun simctl runtime add "~/Downloads/com.apple.pkg.iPhoneSimulatorSDK15_0-15.0.1.1633542405.dmg"
       - name: ut
         run: xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination 'platform=iOS Simulator,name=iPhone SE (1st generation),OS=15.0' test
