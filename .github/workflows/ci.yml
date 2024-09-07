@@ -16,4 +16,4 @@ jobs:
           name: run tests
           status: completed
           conclusion: success
-          sha: ${{ github.ref }}
+          sha: ${{ github.sha }}
