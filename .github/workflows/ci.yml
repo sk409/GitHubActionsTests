@@ -48,5 +48,5 @@ jobs:
               repo: context.repo.repo,
               check_run_id: id,
               status: 'completed',
-              conclusion: ${{ steps.link.outcome == 'success' }} && ${{ steps.ut.outcome == 'success' }} ? 'success' : 'failure'
+              conclusion: ${{ steps.lint.outcome == 'success' }} && ${{ steps.ut.outcome == 'success' }} ? 'success' : 'failure'
             })
