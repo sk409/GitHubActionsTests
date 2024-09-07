@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  workflow_dispatch:
+  in_progress:
     runs-on: ubuntu-latest
     steps:
       - name: id
@@ -18,33 +18,41 @@ jobs:
               check_name: 'review',
               filter: 'latest'
             });
-            return list.data.check_runs[0].id;
-          result-encoding: string
-      - name: in_progress
+            const id = list.data.check_runs[0].id;
+            github.rest.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_run_id: id,
+              status: 'in_progress'
+            })
+  lint:
+    steps:
+      - name: lint
+        run: exit 0
+  ut:
+    steps:
+      - name: ut
+        run: exit 0
+  update:
+    needs: [lint, ut]
+    steps:
+      - name: update
         uses: actions/github-script@v7
         with:
           script: |
+            const list = await github.rest.checks.listForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: '${{ github.ref }}',
+              check_name: 'review',
+              filter: 'latest'
+            });
+            const id = list.data.check_runs[0].id;
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: ${{ steps.id.outputs.result }},
-              status: 'in_progress'
-            })
-      - name: lint
-        id: lint
-        continue-on-error: true
-        run: exit 0
-      - name: ut
-        id: ut
-        continue-on-error: true
-        run: exit 0
-      - uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.checks.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              check_run_id: ${{ steps.id.outputs.result }},
+              check_run_id: id,
               status: 'completed',
-              conclusion: ${{ steps.lint.outcome == 'success' }} && ${{ steps.ut.outcome == 'success' }} ? 'success' : 'failure'
+              conclusion: ${{ needs.lint.outcome == 'success' }} && ${{ needs.ut.outcome == 'success' }} ? 'success' : 'failure'
             })
+    
