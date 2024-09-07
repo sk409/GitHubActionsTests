@@ -22,7 +22,6 @@ jobs:
             })
   workflow_dispatch:
     if: github.event_name == 'workflow_dispatch'
-    name: review
     runs-on: ubuntu-latest
     steps:
       - name: something test1
