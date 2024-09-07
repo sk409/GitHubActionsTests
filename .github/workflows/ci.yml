@@ -27,7 +27,7 @@ jobs:
       - name: lint
         id: lint
         continue-on-error: true
-        run: exit 0
+        run: exit 1
       - name: ut
         id: ut
         continue-on-error: true
