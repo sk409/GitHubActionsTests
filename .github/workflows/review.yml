@@ -37,6 +37,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Select Xcode version
         run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
+      - name: t
+        run: ls /usr/sbin/installer
       - name: Install simulators
         run: sudo xcodes runtimes install "iOS 15.0"
       - name: ut
