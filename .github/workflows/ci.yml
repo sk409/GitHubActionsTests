@@ -38,9 +38,10 @@ jobs:
               filter: 'latest'
             });
             const id = list.data.check_runs[0].id;
-            console.log(id)
             github.rest.checks.update({
               owner: context.repo.owner,
-              repo: context.repo.repo//,
-              //check_run_id: id
+              repo: context.repo.repo,
+              check_run_id: id,
+              status: 'completed',
+              conslusion: 'success'
             })
