@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: id
+        id: id
         uses: actions/github-script@v7
         with:
           script: |
