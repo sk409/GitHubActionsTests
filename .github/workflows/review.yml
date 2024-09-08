@@ -6,7 +6,7 @@ jobs:
   start:
     runs-on: ubuntu-latest
     steps:
-      - name: id
+      - name: ID
         id: id
         uses: actions/github-script@v7
         with:
@@ -28,7 +28,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: lint
+      - name: Lint
         run: exit 0
   ut:
     runs-on: macos-14
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [start, lint, iOS15]
     steps:
-      - name: update
+      - name: Update
         uses: actions/github-script@v7
         with:
           script: |
