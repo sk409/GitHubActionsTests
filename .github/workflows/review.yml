@@ -62,7 +62,7 @@ jobs:
       - name: UT
         run: |
           if [ ${{ matrix.iOS }} = "15.0" ]; then
-            device="iPhone 13 Pro Max"
+            device="iPhone 13 Pro"
           else
             device="iPhone 14 Pro"
           fi
