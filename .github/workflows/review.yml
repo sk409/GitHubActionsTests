@@ -57,7 +57,7 @@ jobs:
         run: xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination 'platform=iOS Simulator,name=iPhone SE (2nd generation),OS=15.0' test
   completed:
     runs-on: ubuntu-latest
-    needs: [start, lint, ut]
+    needs: [setup, lint, ut]
     steps:
       - name: Completed
         uses: actions/github-script@v7
