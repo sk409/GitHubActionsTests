@@ -34,23 +34,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Format
+        run: |
+          brew install swift-format
+          swift-format format -i $(git diff origin/main..${{ github.ref }})
       - name: Diff
         id: diff
         run: |
           git add -N .
           git diff --name-only --exit-code
         continue-on-error: true
-      - name: Format
-        run: |
-          brew install swift-format
-          swift-format format -i $(git diff origin/main..${{ github.ref }})
       - name: Push
         run: |
-          set -x
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add .
-          git commit --author=. -m 'generated'
+          git commit --author=. -m 'Run swift-format'
           git push
         if: steps.diff.outcome == 'failure'
   lint:
