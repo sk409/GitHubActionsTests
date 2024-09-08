@@ -5,7 +5,7 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      - check_run_id: ${{ steps.setup.outputs.check_run_id }}
+      check_run_id: ${{ steps.setup.outputs.check_run_id }}
     steps:
       - name: Set Up
         id: setup
