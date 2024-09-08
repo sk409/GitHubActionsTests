@@ -28,10 +28,11 @@ jobs:
             })
             core.setOutput("checkRunID", checkRunID)
   lint:
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     steps:
       - name: Lint
-        run: exit 0
+        run: |
+          swift-format lint -s $(git diff main..${{ github.ref }})
   ut:
     runs-on: macos-14
     strategy:
