@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: lint
         run: exit 0
-  iOS15:
+  ut:
     runs-on: macos-14
     strategy:
       matrix:
