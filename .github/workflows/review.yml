@@ -54,7 +54,7 @@ jobs:
           sudo xcodes runtimes install "iOS ${{ matrix.iOS }}"
       - name: Checkout
         uses: actions/checkout@v4
-      - name: ut
+      - name: UT
         run: xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination 'platform=iOS Simulator,name=iPhone SE (2nd generation),OS=15.0' test
   update:
     runs-on: ubuntu-latest
