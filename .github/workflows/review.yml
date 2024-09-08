@@ -52,7 +52,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: UT
-        run: xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination 'platform=iOS Simulator,name=iPhone SE (2nd generation),OS=15.0' test
+        run: |
+          if [ ${{ matrix.iOS = "15.0" }} ]; then
+            device="iPhone 13"
+          else
+            device="iPhone 14"
+          fi
+          xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination "platform=iOS Simulator,name=$device,OS=15.0" test
   completed:
     runs-on: ubuntu-latest
     if: always()
