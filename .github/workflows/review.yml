@@ -53,7 +53,7 @@ jobs:
         uses: actions/checkout@v4
       - name: UT
         run: |
-          if [ ${{ matrix.iOS = "15.0" }} ]; then
+          if [ ${{ matrix.iOS }} = "15.0" ]; then
             device="iPhone 13"
           else
             device="iPhone 14"
