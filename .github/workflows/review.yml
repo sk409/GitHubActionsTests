@@ -26,7 +26,7 @@ jobs:
               check_run_id: checkRunID,
               status: 'in_progress'
             })
-            core.setOutput("checkRunID", checkRunID)
+            core.setOutput("check_run_id", checkRunID)
   lint:
     runs-on: macos-14
     steps:
@@ -80,7 +80,7 @@ jobs:
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: core.getInput('checkRunID', { required: true }),
+              check_run_id: ${{ needs.setup.check_run_id }}),
               status: 'completed',
               conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.iOS15.result == 'success' }} ? 'success' : 'failure'
             })
