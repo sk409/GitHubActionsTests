@@ -32,6 +32,7 @@ jobs:
     steps:
       - name: Lint
         run: |
+          brew install swift-format
           swift-format lint -s $(git diff main..${{ github.ref }})
   ut:
     runs-on: macos-14
