@@ -70,7 +70,6 @@ jobs:
                      -scheme GitHubActionsTests \
                      -destination "platform=iOS Simulator,name=$device,OS=${{ matrix.iOS }}" \
                      test
-        continue-on-error: true
   completed:
     runs-on: ubuntu-latest
     if: always()
