@@ -29,6 +29,30 @@ jobs:
             return {
               checkRunID
             }
+  format:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Diff
+        id: diff
+        run: |
+          git add -N .
+          git diff --name-only --exit-code
+        continue-on-error: true
+      - name: Format
+        run: |
+          brew install swift-format
+          swift-format format -i $(git diff origin/main..${{ github.ref }})
+      - name: Push
+        run: |
+          set -x
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .
+          git commit --author=. -m 'generated'
+          git push
+        if: steps.diff.outcome == 'failure'
   lint:
     runs-on: macos-14
     steps:
@@ -37,7 +61,7 @@ jobs:
       - name: Lint
         run: |
           brew install swift-format
-          swift-format lint -s $(git diff main..${{ github.ref }})
+          swift-format lint -s $(git diff origin/main..${{ github.ref }})
   ut:
     runs-on: macos-14
     strategy:
@@ -81,6 +105,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            console.log(needs.setup)
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
