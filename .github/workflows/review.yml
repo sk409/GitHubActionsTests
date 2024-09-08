@@ -82,7 +82,7 @@ jobs:
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: ${{ needs.setup.check_run_id }}),
+              check_run_id: ${{ needs.setup.check_run_id }},
               status: 'completed',
               conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.iOS15.result == 'success' }} ? 'success' : 'failure'
             })
