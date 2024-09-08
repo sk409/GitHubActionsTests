@@ -39,6 +39,7 @@ jobs:
   ut:
     runs-on: macos-14
     strategy:
+      fail-fast: false
       matrix:
         iOS: ["15.0", "16.0", "17.5"]
     steps:
