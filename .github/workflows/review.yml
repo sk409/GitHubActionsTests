@@ -32,24 +32,28 @@ jobs:
         run: exit 0
   iOS15:
     runs-on: macos-14
+    strategy:
+      matrix:
+        iOS: [15.0, 16.4, 17.5]
     steps:
+      - name: Delete Xcodes
+        run: |
+          rm -rf /Applications/Xcode_16.1_beta.app \
+                 /Applications/Xcode_16_beta_6.app \
+                 /Applications/Xcode_15.4.app \
+                 /Applications/Xcode_15.2.app \
+                 /Applications/Xcode_15.1.app \
+                 /Applications/Xcode_15.0.1.app \
+                 /Applications/Xcode_14.3.1.app
+      - name: Select Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
+      - name: Install simulators
+        if: ${{ matrix.iOS }} == 15.0
+        run: |
+          sudo xcodes runtimes install "iOS ${{ matrix.iOS }}"
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install simulators
-        run: |
-          rm -rf /Applications/Xcode_16.1_beta.app
-          rm -rf /Applications/Xcode_16_beta_6.app
-          rm -rf /Applications/Xcode_15.4.app
-          rm -rf /Applications/Xcode_15.2.app
-          rm -rf /Applications/Xcode_15.1.app
-          rm -rf /Applications/Xcode_15.0.1.app
-          rm -rf /Applications/Xcode_14.3.1.app
-          sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
-          sudo xcodes runtimes install "iOS 15.0"
-          # xcodebuild -runFirstLaunch
-          # ls ~/Downloads | grep 15
-          # echo "ADDDDDDDD"
-          # xcrun simctl runtime add "~/Downloads/com.apple.pkg.iPhoneSimulatorSDK15_0-15.0.1.1633542405.dmg"
       - name: ut
         run: xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination 'platform=iOS Simulator,name=iPhone SE (2nd generation),OS=15.0' test
   update:
