@@ -5,7 +5,7 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      checkRunID: ${{ steps.setup.outputs.result }}
+      result: ${{ steps.setup.outputs.result }}
     steps:
       - name: Set Up
         id: setup
@@ -107,11 +107,10 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            console.log(needs.setup)
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: ${{ needs.setup.checkRunID }},
+              check_run_id: ${{ needs.setup.outputs.result.checkRunID }},
               status: 'completed',
               conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.iOS15.result == 'success' }} ? 'success' : 'failure'
             })
