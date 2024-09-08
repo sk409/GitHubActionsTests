@@ -5,7 +5,7 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      check_run_id: ${{ steps.setup.outputs.check_run_id }}
+      checkRunID: ${{ steps.setup.outputs.result }}
     steps:
       - name: Set Up
         id: setup
@@ -26,7 +26,9 @@ jobs:
               check_run_id: checkRunID,
               status: 'in_progress'
             })
-            core.setOutput("check_run_id", checkRunID)
+            return {
+              checkRunID
+            }
   lint:
     runs-on: macos-14
     steps:
@@ -82,7 +84,7 @@ jobs:
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: ${{ needs.setup.check_run_id }},
+              check_run_id: ${{ needs.setup.checkRunID }},
               status: 'completed',
               conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.iOS15.result == 'success' }} ? 'success' : 'failure'
             })
