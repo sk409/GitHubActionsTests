@@ -61,7 +61,10 @@ jobs:
           else
             device="iPhone 14 Pro"
           fi
-          xcodebuild -workspace GitHubActions.xcworkspace -scheme GitHubActionsTests -destination "platform=iOS Simulator,name=$device,OS=15.0" test
+          xcodebuild -workspace GitHubActions.xcworkspace \
+                     -scheme GitHubActionsTests \
+                     -destination "platform=iOS Simulator,name=$device,OS=15.0" \
+                     test
   completed:
     runs-on: ubuntu-latest
     if: always()
