@@ -54,6 +54,7 @@ jobs:
         if: steps.diff.outcome == 'failure'
   lint:
     runs-on: macos-14
+    needs: format
     steps:
       - name: Checkout
         uses: actions/checkout@v4
