@@ -4,8 +4,11 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-latest
+    outputs:
+          - check_run_id: ${{ steps.setup.outputs.check_run_id }}
     steps:
       - name: Set Up
+        id: setup
         uses: actions/github-script@v7
         with:
           script: |
@@ -16,13 +19,14 @@ jobs:
               check_name: 'review',
               filter: 'latest'
             });
-            const id = list.data.check_runs[0].id;
+            const check_run_id = list.data.check_runs[0].id;
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: id,
+              check_run_id: check_run_id,
               status: 'in_progress'
             })
+            echo "check_run_id=$check_run_id" >> "$GITHUB_OUTPUT"
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -67,18 +71,10 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const list = await github.rest.checks.listForRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: '${{ github.ref }}',
-              check_name: 'review',
-              filter: 'latest'
-            });
-            const id = list.data.check_runs[0].id;
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: id,
+              check_run_id: ${{ needs.setup.outputs.check_run_id }},
               status: 'completed',
               conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.iOS15.result == 'success' }} ? 'success' : 'failure'
             })
