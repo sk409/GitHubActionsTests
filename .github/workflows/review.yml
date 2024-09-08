@@ -45,12 +45,10 @@ jobs:
                  /Applications/Xcode_15.0.1.app \
                  /Applications/Xcode_14.3.1.app
       - name: Select Xcode
-        run: |
-          sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
+        run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
       - name: Install simulators
         if: ${{ matrix.iOS }} != 17.5
-        run: |
-          sudo xcodes runtimes install "iOS ${{ matrix.iOS }}"
+        run: sudo xcodes runtimes install "iOS ${{ matrix.iOS }}"
       - name: Checkout
         uses: actions/checkout@v4
       - name: UT
