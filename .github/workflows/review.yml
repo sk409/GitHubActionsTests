@@ -19,14 +19,14 @@ jobs:
               check_name: 'review',
               filter: 'latest'
             });
-            const check_run_id = list.data.check_runs[0].id;
+            const checkRunID = list.data.check_runs[0].id;
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: check_run_id,
+              check_run_id: checkRunID,
               status: 'in_progress'
             })
-            echo "check_run_id=$check_run_id" >> "$GITHUB_OUTPUT"
+            core.setOutput("checkRunID", checkRunID)
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -74,7 +74,7 @@ jobs:
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: ${{ needs.setup.outputs.check_run_id }},
+              check_run_id: core.getInput('checkRunID', { required: true });,
               status: 'completed',
               conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.iOS15.result == 'success' }} ? 'success' : 'failure'
             })
