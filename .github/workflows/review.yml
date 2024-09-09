@@ -108,7 +108,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            console.log(${{ needs.setup.outputs }})
+            console.log(${{ needs.setup.outputs.result }})
           # github.rest.checks.update({
           #   owner: context.repo.owner,
           #   repo: context.repo.repo,
