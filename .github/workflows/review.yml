@@ -109,7 +109,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const setup = JSON.parse(${{ needs.setup.outputs.result["checkRunID"] }})
+            const setup = JSON.parse("${{ needs.setup.outputs.result }}"")
             conosle.log(setup)
           # github.rest.checks.update({
           #   owner: context.repo.owner,
