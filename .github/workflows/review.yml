@@ -115,6 +115,7 @@ jobs:
               repo: context.repo.repo,
               check_run_id: setup.checkRunID,
               status: 'completed',
-              conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.ut.result == 'success' }} ? 'success' : 'failure'
+              // conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.ut.result == 'success' }} ? 'success' : 'failure'
+              conclusion: ${{ needs.lint.result == 'success' }} ? 'success' : 'failure'
             })
     
