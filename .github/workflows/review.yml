@@ -39,7 +39,7 @@ jobs:
         run: |
           brew install swift-format
           git fetch origin main
-          swift-format format -i $(git diff --name-only main..HEAD)
+          swift-format format -i $(git diff --name-only origin/main..HEAD)
       - name: Diff
         id: diff
         run: |
@@ -64,7 +64,7 @@ jobs:
         run: |
           brew install swift-format
           git fetch origin main
-          swift-format lint -s $(git diff --name-only main..HEAD)
+          swift-format lint -s $(git diff --name-only origin/main..HEAD)
   # ut:
   #   runs-on: macos-14
   #   strategy:
