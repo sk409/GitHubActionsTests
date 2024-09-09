@@ -110,12 +110,11 @@ jobs:
         with:
           script: |
             const setup = JSON.parse('${{ needs.setup.outputs.result }}')
-            conosle.log(setup)
-          # github.rest.checks.update({
-          #   owner: context.repo.owner,
-          #   repo: context.repo.repo,
-          #   check_run_id: ${{ needs.setup.outputs.result.checkRunID }},
-          #   status: 'completed',
-          #   conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.iOS15.result == 'success' }} ? 'success' : 'failure'
-          # })
+            github.rest.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_run_id: setup.checkRunID,
+              status: 'completed',
+              conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.iOS15.result == 'success' }} ? 'success' : 'failure'
+            })
     
