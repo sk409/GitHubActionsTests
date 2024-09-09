@@ -10,6 +10,7 @@ jobs:
       - name: Set Up
         id: setup
         uses: actions/github-script@v7
+        result-encoding: string
         with:
           script: |
             const list = await github.rest.checks.listForRef({
@@ -26,9 +27,9 @@ jobs:
               check_run_id: checkRunID,
               status: 'in_progress'
             })
-            return {
+            return JSON.stringify({
               checkRunID
-            }
+            })
   format:
     runs-on: macos-14
     steps:
@@ -108,7 +109,8 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            conosle.log(${{ needs.setup.outputs.result["checkRunID"] }})
+            const setup = JSON.parse(${{ needs.setup.outputs.result }})
+            conosle.log(setup)
           # github.rest.checks.update({
           #   owner: context.repo.owner,
           #   repo: context.repo.repo,
