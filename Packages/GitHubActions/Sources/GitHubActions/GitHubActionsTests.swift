@@ -2,5 +2,5 @@
 // https://docs.swift.org/swift-book
 
 public func f(a: Int) -> Int {
-    a + 1
+  a + 1
 }
