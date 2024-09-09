@@ -10,8 +10,8 @@ jobs:
       - name: Set Up
         id: setup
         uses: actions/github-script@v7
-        result-encoding: string
         with:
+          result-encoding: string
           script: |
             const list = await github.rest.checks.listForRef({
               owner: context.repo.owner,
