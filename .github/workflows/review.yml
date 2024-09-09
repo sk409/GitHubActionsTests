@@ -28,7 +28,7 @@ jobs:
               status: 'in_progress'
             })
             return JSON.stringify({
-              checkRunID
+              checkRunID: checkRunID
             })
   format:
     runs-on: macos-14
