@@ -61,7 +61,7 @@ jobs:
           path: ~/Downloads/com.apple.pkg.iPhoneSimulatorSDK15_0-15.0.1.1633542405.dmg
           key: ${{ matrix.iOS }}-simulators
       - name: Install simulators
-        if: ${{ matrix.iOS != '17.5' }} && steps.cache.outputs.cache-hit != 'true'
+        if: ${{ matrix.iOS != '17.5' }}
         run: |
           sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.iOS }}"
           ls ~/Downloads
