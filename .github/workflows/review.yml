@@ -63,7 +63,7 @@ jobs:
       - name: Install simulators
         if: ${{ matrix.iOS != '17.5' }} && steps.cache.outputs.cache-hit != 'true'
         run: |
-          sudo xcodes runtimes install "iOS ${{ matrix.iOS }}"
+          sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.iOS }}"
           ls ~/Downloads
       - name: Checkout
         uses: actions/checkout@v4
