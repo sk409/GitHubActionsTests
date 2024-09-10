@@ -51,12 +51,7 @@ jobs:
       - name: Delete Xcodes
         run: |
           rm -rf /Applications/Xcode_16.1_beta.app \
-                 /Applications/Xcode_16_beta_6.app \
-                 /Applications/Xcode_15.4.app \
-                 /Applications/Xcode_15.2.app \
-                 /Applications/Xcode_15.1.app \
-                 /Applications/Xcode_15.0.1.app \
-                 /Applications/Xcode_14.3.1.app
+                 /Applications/Xcode_16_beta_6.app
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
       - name: Cache simulators
@@ -67,9 +62,7 @@ jobs:
           key: ${{ matrix.iOS }}-simulators
       - name: Install simulators
         if: ${{ matrix.iOS != '17.5' }} && steps.cache.outputs.cache-hit != 'true'
-        run: |
-          sudo xcodes runtimes install "iOS ${{ matrix.iOS }}"
-          ls ~/Downloads | grep ${{ matrix.iOS }}
+        run: sudo xcodes runtimes install "iOS ${{ matrix.iOS }}"
       - name: Checkout
         uses: actions/checkout@v4
       # - name: UT
