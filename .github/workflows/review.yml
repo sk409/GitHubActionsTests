@@ -75,6 +75,12 @@ jobs:
         if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit != 'true' }}
         run: |
           sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.iOS }}"
+      - name: Zip simulators
+        if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit != 'true' }}
+        working-directory: /Library/Developer/CoreSimulator/Profiles/Runtimes
+        run: zip -r ~/iOS\ ${{ matrix.iOS }}.simruntime.zip iOS\ ${{ matrix.iOS }}.simruntime
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Cache packages
         uses: actions/cache@v4
         with:
@@ -82,8 +88,6 @@ jobs:
           key: ${{ runner.os }}-spm-${{ hashFiles('GitHubActions.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
           restore-keys: |
             ${{ runner.os }}-spm-
-      - name: Checkout
-        uses: actions/checkout@v4
       - name: UT
         id: ut
         continue-on-error: true
@@ -111,9 +115,6 @@ jobs:
         with:
           name: Lancers-${{ github.run_number }}.xcresult
           path: ~/Lancers.xcresult
-      - name: Zip simulators
-        working-directory: /Library/Developer/CoreSimulator/Profiles/Runtimes
-        run: zip -r ~/iOS\ ${{ matrix.iOS }}.simruntime.zip iOS\ ${{ matrix.iOS }}.simruntime
   completed:
     runs-on: ubuntu-latest
     if: always()
