@@ -62,6 +62,7 @@ jobs:
         with:
           path: ~/iOS\ ${{ matrix.iOS }}.simruntime.zip
           key: ${{ runner.os }}-iOS-simulator-${{ matrix.iOS }}
+          save-always: true
       - name: Unzip simulators
         if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit == 'true' }}
         run: |
