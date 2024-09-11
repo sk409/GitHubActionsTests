@@ -69,7 +69,7 @@ jobs:
           xcodebuild -workspace GitHubActions.xcworkspace \
                      -scheme GitHubActionsTests \
                      -destination "platform=iOS Simulator,name=$device,OS=${{ matrix.iOS }}" \
-                     -resultBundlePath Lancers.xcresult
+                     -resultBundlePath Lancers.xcresult \
                      test
       - name: Upload xcresult
         uses: actions/upload-artifact@v4
