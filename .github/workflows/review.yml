@@ -54,30 +54,28 @@ jobs:
                  /Applications/Xcode_16_beta_6.app
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
-      - name: Cache simulators
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: ~/Downloads/com.apple.pkg.iPhoneSimulatorSDK15_0-15.0.1.1633542405.dmg
-          key: ${{ matrix.iOS }}-simulators
       - name: Install simulators
         if: ${{ matrix.iOS != '17.5' }}
-        run: |
-          sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.iOS }}"
-          ls ~/Downloads
+        run: sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.iOS }}"
       - name: Checkout
         uses: actions/checkout@v4
-      # - name: UT
-      #   run: |
-      #     if [ ${{ matrix.iOS }} = "15.0" ]; then
-      #       device="iPhone 13 Pro"
-      #     else
-      #       device="iPhone 14 Pro"
-      #     fi
-      #     xcodebuild -workspace GitHubActions.xcworkspace \
-      #                -scheme GitHubActionsTests \
-      #                -destination "platform=iOS Simulator,name=$device,OS=${{ matrix.iOS }}" \
-      #                test
+      - name: UT
+        run: |
+          if [ ${{ matrix.iOS }} = "15.0" ]; then
+            device="iPhone 13 Pro"
+          else
+            device="iPhone 14 Pro"
+          fi
+          xcodebuild -workspace GitHubActions.xcworkspace \
+                     -scheme GitHubActionsTests \
+                     -destination "platform=iOS Simulator,name=$device,OS=${{ matrix.iOS }}" \
+                     -resultBundlePath Lancers.xcresult
+                     test
+      - name: Upload xcresult
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcresult
+          path: Lancers.xcresult
   completed:
     runs-on: ubuntu-latest
     if: always()
