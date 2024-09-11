@@ -72,10 +72,10 @@ jobs:
       #   run: |
       #     sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
       #     sudo unzip ~/iOS\ 16.0.simruntime.zip -d /Library/Developer/CoreSimulator/Profiles/Runtimes
-      - name: Install simulators
-        if: ${{ matrix.iOS == '16.0' && steps.simulators.outputs.cache-hit != 'true' }}
-        run: |
-          sudo xcodes runtimes install --keep-archive "iOS 16.0"
+      # - name: Install simulators
+      #   if: ${{ matrix.iOS == '16.0' && steps.simulators.outputs.cache-hit != 'true' }}
+      #   run: |
+      #     sudo xcodes runtimes install --keep-archive "iOS 16.0"
       # - name: Zip simulators
       #   if: ${{ matrix.iOS == '16.0' && steps.simulators.outputs.cache-hit != 'true' }}
       #   # working-directory: /Library/Developer/CoreSimulator/Profiles/Runtimes
