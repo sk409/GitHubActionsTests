@@ -94,7 +94,7 @@ jobs:
       - name: UT
         id: ut
         continue-on-error: true
-        run: echo "result=success" >> "$GITHUB_OUTPUT"
+        run: |
           if [ ${{ matrix.iOS }} = "15.0" ]; then
             device="iPhone 13 Pro"
           else
