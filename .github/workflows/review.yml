@@ -47,8 +47,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # iOS: ["15.0", "16.0", "17.5"]
-        iOS: ["15.0"]
+        iOS: ["15.0", "16.0", "17.5"]
     steps:
       - name: Delete Xcodes
         run: |
@@ -60,25 +59,27 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
       - name: Cache simulators
+        # simruntime.zipは5GB以上あるが、GitHubActionsのキャッシュの上限が10GBのため、iOS16.0のみキャッシュする。
+        if: ${{ matrix.iOS == '16.0' }}
         id: simulators
         uses: actions/cache@v4
         with:
-          path: ~/iOS\ ${{ matrix.iOS }}.simruntime.zip
-          key: ${{ runner.os }}-iOS-simulator-${{ matrix.iOS }}
+          path: ~/iOS\ 16.0.simruntime.zip
+          key: ${{ runner.os }}-iOS-simulator-16.0
           save-always: true
       - name: Unzip simulators
-        if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit == 'true' }}
+        if: ${{ matrix.iOS == '16.0' && steps.simulators.outputs.cache-hit == 'true' }}
         run: |
           sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
-          sudo unzip ~/iOS\ ${{ matrix.iOS }}.simruntime.zip -d /Library/Developer/CoreSimulator/Profiles/Runtimes
+          sudo unzip ~/iOS\ 16.0.simruntime.zip -d /Library/Developer/CoreSimulator/Profiles/Runtimes
       - name: Install simulators
-        if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit != 'true' }}
+        if: ${{ matrix.iOS == '16.0' && steps.simulators.outputs.cache-hit != 'true' }}
         run: |
-          sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.iOS }}"
+          sudo xcodes runtimes install --keep-archive "iOS 16.0"
       - name: Zip simulators
-        if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit != 'true' }}
+        if: ${{ matrix.iOS == '16.0' && steps.simulators.outputs.cache-hit != 'true' }}
         working-directory: /Library/Developer/CoreSimulator/Profiles/Runtimes
-        run: zip -r ~/iOS\ ${{ matrix.iOS }}.simruntime.zip iOS\ ${{ matrix.iOS }}.simruntime
+        run: zip -r ~/iOS\ 16.0.simruntime.zip iOS\ 16.0.simruntime
       - name: Checkout
         uses: actions/checkout@v4
       - name: Cache packages

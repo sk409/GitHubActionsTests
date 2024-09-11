@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "GitHubActions",
-  platforms: [.iOS(.v15)],
+  platforms: [.iOS(.v15), .macOS(.v13)],
   products: [
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
@@ -27,5 +27,14 @@ let package = Package(
     .testTarget(
       name: "GitHubActionsTests",
       dependencies: ["GitHubActions"]),
+    .target(
+      name: "Macro",
+      dependencies: [
+        .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+      ]
+    ),
+    .testTarget(
+      name: "MacroTests",
+      dependencies: ["Macro"]),
   ]
 )
