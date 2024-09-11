@@ -68,7 +68,7 @@ jobs:
         run: |
           # sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
           # sudo unzip ~/iOS\ ${{ matrix.iOS }}.simruntime.zip -d /Library/Developer/CoreSimulator/Profiles/Runtimes
-          echo ${{ steps.simulators.outputs }}
+          echo ${{ steps.simulators.outputs.cache-hit }}
       - name: Install simulators
         #if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit == 'false' }}
         if: steps.simulators.outputs.cache-hit == 'false'
