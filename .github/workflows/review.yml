@@ -55,7 +55,6 @@ jobs:
           rm -rf /Applications/Xcode_16.1_beta.app \
                  /Applications/Xcode_16_beta_6.app \
                  /Applications/Xcode_15.4.app \
-                 /Applications/Xcode_15.3.app \
                  /Applications/Xcode_15.2.app \
                  /Applications/Xcode_15.1.app \
       - name: Select Xcode
