@@ -79,7 +79,9 @@ jobs:
       - name: Zip simulators
         if: ${{ matrix.iOS == '16.0' && steps.simulators.outputs.cache-hit != 'true' }}
         working-directory: /Library/Developer/CoreSimulator/Profiles/Runtimes
-        run: zip -r ~/iOS\ 16.0.simruntime.zip iOS\ 16.0.simruntime
+        run: |
+          ls -l
+          zip -r ~/iOS\ 16.0.simruntime.zip iOS\ 16.0.simruntime
       - name: Checkout
         uses: actions/checkout@v4
       - name: Cache packages
