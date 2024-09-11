@@ -81,6 +81,7 @@ jobs:
         # working-directory: /Library/Developer/CoreSimulator/Profiles/Runtimes
         run: |
           ls -l /Library/Developer/CoreSimulator/Profiles/Runtimes
+          ls -l /Library/Developer/CoreSimulator/Profiles/Runtimes/*
           # zip -r ~/iOS\ 16.0.simruntime.zip iOS\ 16.0.simruntime
       - name: Checkout
         uses: actions/checkout@v4
