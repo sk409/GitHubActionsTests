@@ -81,6 +81,7 @@ jobs:
                      -destination "platform=iOS Simulator,name=$device,OS=${{ matrix.iOS }}" \
                      -resultBundlePath ~/Lancers.xcresult \
                      -clonedSourcePackagesDirPath ~/SourcePackages \
+                     -skipMacroValidation \
                      test
           if [ $? -eq 0 ]; then
             result="success"
