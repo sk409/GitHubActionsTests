@@ -117,7 +117,7 @@ jobs:
       - name: Upload xcresult
         uses: actions/upload-artifact@v4
         with:
-          name: Lancers-${{ github.run_number }}.xcresult
+          name: Lancers-iOS${{ matrix.iOS }}-${{ github.run_number }}.xcresult
           path: ~/Lancers.xcresult
   completed:
     runs-on: ubuntu-latest
