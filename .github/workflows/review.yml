@@ -57,18 +57,18 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
       - name: Cache simulators
-        id: cache-simulators
+        id: simulators
         uses: actions/cache@v4
         with:
           path: ~/iOS\ ${{ matrix.iOS }}.simruntime.zip
           key: ${{ runner.os }}-iOS-simulator-${{ matrix.iOS }}
       - name: Unzip simulators
-        if: ${{ matrix.iOS != '17.5' && steps.cache-simulators.outputs.cache-hit == 'true' }}
+        if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit == 'true' }}
         run: |
           sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
           sudo unzip ~/iOS\ ${{ matrix.iOS }}.simruntime.zip -d /Library/Developer/CoreSimulator/Profiles/Runtimes
       - name: Install simulators
-        if: ${{ matrix.iOS != '17.5' && steps.cache-simulators.outputs.cache-hit == 'false' }}
+        if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit == 'false' }}
         run: sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.iOS }}"
       - name: Cache packages
         uses: actions/cache@v4
