@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-   location = "group:GitHubActions.xcodeproj">
+      location = "group:GitHubActions.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Packages/GitHubActions">
