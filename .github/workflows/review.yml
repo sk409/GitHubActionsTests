@@ -70,7 +70,6 @@ jobs:
       - name: Install simulators
         if: ${{ matrix.iOS != '17.5' }} && steps.cache-simulators.outputs.cache-hit == 'false'
         run: sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.iOS }}"
-        with:
       - name: Cache packages
         uses: actions/cache@v4
         with:
