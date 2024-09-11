@@ -72,7 +72,7 @@ jobs:
           sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
           sudo unzip ~/iOS\ ${{ matrix.iOS }}.simruntime.zip -d /Library/Developer/CoreSimulator/Profiles/Runtimes
       - name: Install simulators
-        if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit != 'false' }}
+        if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit != 'true' }}
         run: |
           sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.iOS }}"
       - name: Cache packages
