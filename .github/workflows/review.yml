@@ -93,24 +93,24 @@ jobs:
         id: ut
         continue-on-error: true
         run: echo "result=success" >> "$GITHUB_OUTPUT"
-        # if [ ${{ matrix.iOS }} = "15.0" ]; then
-        #   device="iPhone 13 Pro"
-        # else
-        #   device="iPhone 14 Pro"
-        # fi
-        # xcodebuild -workspace GitHubActions.xcworkspace \
-        #             -scheme GitHubActionsTests \
-        #             -destination "platform=iOS Simulator,name=$device,OS=${{ matrix.iOS }}" \
-        #             -resultBundlePath ~/Lancers.xcresult \
-        #             -clonedSourcePackagesDirPath ~/SourcePackages \
-        #             -skipMacroValidation \
-        #             test
-        # if [ $? -eq 0 ]; then
-        #   result="success"
-        # else
-        #   result="failure"
-        # fi
-        # echo "result=$result" >> "$GITHUB_OUTPUT"
+          if [ ${{ matrix.iOS }} = "15.0" ]; then
+            device="iPhone 13 Pro"
+          else
+            device="iPhone 14 Pro"
+          fi
+          xcodebuild -workspace GitHubActions.xcworkspace \
+                      -scheme GitHubActionsTests \
+                      -destination "platform=iOS Simulator,name=$device,OS=${{ matrix.iOS }}" \
+                      -resultBundlePath ~/Lancers.xcresult \
+                      -clonedSourcePackagesDirPath ~/SourcePackages \
+                      -skipMacroValidation \
+                      test
+          if [ $? -eq 0 ]; then
+            result="success"
+          else
+            result="failure"
+          fi
+          echo "result=$result" >> "$GITHUB_OUTPUT"
       - name: Upload xcresult
         uses: actions/upload-artifact@v4
         with:
