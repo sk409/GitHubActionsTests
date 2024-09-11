@@ -50,10 +50,10 @@ jobs:
         # iOS: ["15.0", "16.0", "17.5"]
         iOS: ["15.0"]
     steps:
-      - name: Delete Xcodes
-        run: |
-          rm -rf /Applications/Xcode_16.1_beta.app \
-                 /Applications/Xcode_16_beta_6.app
+      # - name: Delete Xcodes
+      #   run: |
+      #     rm -rf /Applications/Xcode_16.1_beta.app \
+      #            /Applications/Xcode_16_beta_6.app
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
       - name: Cache simulators
