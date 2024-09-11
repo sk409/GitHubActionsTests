@@ -58,31 +58,31 @@ jobs:
                  /Applications/Xcode_15.1.app \
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
-      - name: Cache simulators
-        # simruntime.zipは5GB以上あるが、GitHubActionsのキャッシュの上限が10GBのため、iOS16.0のみキャッシュする。
-        if: ${{ matrix.iOS == '16.0' }}
-        id: simulators
-        uses: actions/cache@v4
-        with:
-          path: ~/iOS\ 16.0.simruntime.zip
-          key: ${{ runner.os }}-iOS-simulator-16.0
-          save-always: true
-      - name: Unzip simulators
-        if: ${{ matrix.iOS == '16.0' && steps.simulators.outputs.cache-hit == 'true' }}
-        run: |
-          sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
-          sudo unzip ~/iOS\ 16.0.simruntime.zip -d /Library/Developer/CoreSimulator/Profiles/Runtimes
+      # - name: Cache simulators
+      #   # simruntime.zipは5GB以上あるが、GitHubActionsのキャッシュの上限が10GBのため、iOS16.0のみキャッシュする。
+      #   if: ${{ matrix.iOS == '16.0' }}
+      #   id: simulators
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ~/iOS\ 16.0.simruntime.zip
+      #     key: ${{ runner.os }}-iOS-simulator-16.0
+      #     save-always: true
+      # - name: Unzip simulators
+      #   if: ${{ matrix.iOS == '16.0' && steps.simulators.outputs.cache-hit == 'true' }}
+      #   run: |
+      #     sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
+      #     sudo unzip ~/iOS\ 16.0.simruntime.zip -d /Library/Developer/CoreSimulator/Profiles/Runtimes
       - name: Install simulators
         if: ${{ matrix.iOS == '16.0' && steps.simulators.outputs.cache-hit != 'true' }}
         run: |
           sudo xcodes runtimes install --keep-archive "iOS 16.0"
-      - name: Zip simulators
-        if: ${{ matrix.iOS == '16.0' && steps.simulators.outputs.cache-hit != 'true' }}
-        # working-directory: /Library/Developer/CoreSimulator/Profiles/Runtimes
-        run: |
-          ls -l /Library/Developer/CoreSimulator/Profiles/Runtimes
-          ls -l /Library/Developer/CoreSimulator/Profiles/Runtimes/*
-          # zip -r ~/iOS\ 16.0.simruntime.zip iOS\ 16.0.simruntime
+      # - name: Zip simulators
+      #   if: ${{ matrix.iOS == '16.0' && steps.simulators.outputs.cache-hit != 'true' }}
+      #   # working-directory: /Library/Developer/CoreSimulator/Profiles/Runtimes
+      #   run: |
+      #     ls -l /Library/Developer/CoreSimulator/Profiles/Runtimes
+      #     ls -l /Library/Developer/CoreSimulator/Profiles/Runtimes/*
+      #     # zip -r ~/iOS\ 16.0.simruntime.zip iOS\ 16.0.simruntime
       - name: Checkout
         uses: actions/checkout@v4
       - name: Cache packages
