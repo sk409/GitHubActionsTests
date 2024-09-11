@@ -64,10 +64,10 @@ jobs:
           key: ${{ runner.os }}-iOS-simulator-${{ matrix.iOS }}
       - name: Unzip simulators
         #if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit == 'true' }}
-        if: steps.simulators.outputs.cache-hit == 'true'
+        # if: steps.simulators.outputs.cache-hit == 'true'
         run: |
-          sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
-          sudo unzip ~/iOS\ ${{ matrix.iOS }}.simruntime.zip -d /Library/Developer/CoreSimulator/Profiles/Runtimes
+          # sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
+          # sudo unzip ~/iOS\ ${{ matrix.iOS }}.simruntime.zip -d /Library/Developer/CoreSimulator/Profiles/Runtimes
           echo ${{ steps.simulators.outputs }}
       - name: Install simulators
         #if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit == 'false' }}
