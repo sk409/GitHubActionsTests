@@ -13,20 +13,13 @@ jobs:
       branch: ${{ steps.pr.outputs.branch }}
       check_run_id: ${{ steps.check-run.outputs.result }}
     steps:
-      ###
-      - name: PR number
-        id: number
-        run: |
-          number=$(echo "refs/pull/33/merge" | sed -e 's/[^0-9]//g')
-          echo "number=$number" >> "$GITHUB_OUTPUT"
-      ###
       - name: Notify
         uses: actions/github-script@v7
         with:
           script: |
             await github.rest.issues.createComment({
               // issue_number: ${{ github.event.issue.number }},
-              issue_number: ${{ steps.number.outputs.number }},
+              issue_number: ${{ github.event.number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: "自動レビューを開始しました。\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
