@@ -125,11 +125,12 @@ jobs:
         with:
           script: |
             const fs = require('fs')
-            fs.writeFileSync("~/result.txt", "${{ steps.ut.outcome }}")
+            const path = require('path')
+            fs.writeFileSync(path.join(process.env.HOME, "result.txt"), "${{ steps.ut.outcome }}")
       - name: Upload test result
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}
+          name: ${{ matrix.os }}-result
           path: ~/result.txt
       - name: Upload xcresult
         uses: actions/upload-artifact@v4
@@ -141,16 +142,33 @@ jobs:
     if: always()
     needs: [setup, lint, ut]
     steps:
+      - name: Download test results
+        uses: actions/download-artifact@v2
+        with:
+          path: ~/results
+          pattern: *-result
       - name: Completed
         uses: actions/github-script@v7
         with:
           script: |
+            const fs = require('fs')
+            const path = require('path')
+            
+            var conclulsion = true
+            const results = path.resolve('~/results')
+            for (const artifact of fs.readdirSync(results)) {
+              const result = fs.readFileSync(path.join(result, artifact, 'result.txt'))
+              conclusion &&= (result == 'success')
+            }
+
+            conclusion &&= ${{ needs.lint.result == 'success' }}
+
             const setup = JSON.parse('${{ needs.setup.outputs.result }}')
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               check_run_id: setup.checkRunID,
               status: 'completed',
-              conclusion: ${{ needs.lint.result == 'success' }} && ${{ needs.ut.outputs.result == 'success' }} ? 'success' : 'failure'
+              conclusion: conclusion ? 'success' : 'failure'
             })
     
