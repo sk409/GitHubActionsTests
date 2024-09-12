@@ -59,7 +59,9 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
       - name: Cache simulators
-        # simruntime.zipは5GB以上あるが、GitHubActionsのキャッシュの上限が10GBのため、iOS 15.0のみキャッシュする。
+        # simruntime.zipは5GB以上あるが、GitHubActionsのキャッシュの上限が10GBである。
+        # 上記に加えて、iOS 16.0のsimruntimesのダウンロード/インストールはキャッシュから取得するよりも高速であるため、
+        # iOS 15.0のみキャッシュする。
         if: ${{ matrix.iOS == '15.0' }}
         id: simulators
         uses: actions/cache@v4
@@ -79,8 +81,7 @@ jobs:
       - name: Zip simulators
         if: ${{ matrix.iOS == '15.0' && steps.simulators.outputs.cache-hit != 'true' }}
         working-directory: /Library/Developer/CoreSimulator/Profiles/Runtimes
-        run: |
-          zip -r ~/iOS\ 15.0.simruntime.zip iOS\ 15.0.simruntime
+        run: zip -r ~/iOS\ 15.0.simruntime.zip iOS\ 15.0.simruntime
       - name: Checkout
         uses: actions/checkout@v4
       - name: Cache packages
