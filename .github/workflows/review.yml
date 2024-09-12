@@ -27,7 +27,7 @@ jobs:
             const list = await github.rest.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: '${{ steps.pr.branch }}',
+              ref: '${{ steps.pr.outputs.branch }}',
               check_name: 'review',
               filter: 'latest'
             });
