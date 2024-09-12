@@ -120,6 +120,17 @@ jobs:
             result="failure"
           fi
           echo "result=$result" >> "$GITHUB_OUTPUT"
+      - name: Write test result
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs')
+            fs.writeFileSync("~/result.txt", "${{ steps.ut.outcome }}")
+      - name: Upload test result
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}
+          path: ~/result.txt
       - name: Upload xcresult
         uses: actions/upload-artifact@v4
         with:
