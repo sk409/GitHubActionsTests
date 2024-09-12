@@ -37,7 +37,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               name: 'review',
-              head_sha: ${{ steps.pr.outputs.sha }}
+              head_sha: "${{ steps.pr.outputs.sha }}"
             })
           # const list = await github.rest.checks.listForRef({
           #   owner: context.repo.owner,
