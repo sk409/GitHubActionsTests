@@ -142,11 +142,11 @@ jobs:
     if: always()
     needs: [setup, lint, ut]
     steps:
-      # - name: Download test results
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     path: ~/results
-      #     pattern: *-result
+      - name: Download test results
+        uses: actions/download-artifact@v4
+        with:
+          path: ~/results
+          pattern: *-result
       - name: Completed
         uses: actions/github-script@v7
         with:
