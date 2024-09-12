@@ -6,8 +6,8 @@ on:
     types: [opened, synchronize]
 jobs:
   setup:
-    if: contains(github.event.comment.html_url, '/pull/') && 
-        github.event.comment.body == '/review'
+    # if: contains(github.event.comment.html_url, '/pull/') && 
+    #     github.event.comment.body == '/review'
     runs-on: ubuntu-latest
     outputs:
       branch: ${{ steps.pr.outputs.branch }}
