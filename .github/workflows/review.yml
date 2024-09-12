@@ -19,7 +19,7 @@ jobs:
               issue_number: ${{ github.event.issue.number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "自動レビューを開始しました。\n${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}"
+              body: "自動レビューを開始しました。\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             })
       - name: Fetch branch
         id: pr
