@@ -97,7 +97,7 @@ jobs:
           if [ ${{ matrix.iOS }} = "15.0" ]; then
             device="iPhone 13 Pro"
           else
-            device="iPhone 14 Pro"
+            device="iPhone 14 Pro Max"
           fi
           xcodebuild -workspace GitHubActions.xcworkspace \
                       -scheme GitHubActionsTests \
