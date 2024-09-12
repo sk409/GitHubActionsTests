@@ -47,7 +47,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        iOS: ["15.0", "16.0", "17.5"]
+        os: ["15.0", "16.0", "17.5", "macOS"]
     steps:
       - name: Delete Xcodes
         run: |
@@ -62,7 +62,7 @@ jobs:
         # simruntime.zipは5GB以上あるが、GitHubActionsのキャッシュの上限が10GBである。
         # 上記に加えて、iOS 16.0のsimruntimesのダウンロード/インストールはキャッシュから取得するよりも高速であるため、
         # iOS 15.0のみキャッシュする。
-        if: ${{ matrix.iOS == '15.0' }}
+        if: ${{ matrix.os == '15.0' }}
         id: simulators
         uses: actions/cache@v4
         with:
@@ -70,16 +70,16 @@ jobs:
           key: ${{ runner.os }}-iOS-simulator-15.0
           save-always: true
       - name: Unzip simulators
-        if: ${{ matrix.iOS == '15.0' && steps.simulators.outputs.cache-hit == 'true' }}
+        if: ${{ matrix.os == '15.0' && steps.simulators.outputs.cache-hit == 'true' }}
         run: |
           sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
           sudo unzip ~/iOS\ 15.0.simruntime.zip -d /Library/Developer/CoreSimulator/Profiles/Runtimes
       - name: Install simulators
-        if: ${{ matrix.iOS != '17.5' && steps.simulators.outputs.cache-hit != 'true' }}
+        if: ${{ (matrix.os == '15.0' || matrix.os == '16.0') && steps.simulators.outputs.cache-hit != 'true' }}
         run: |
-          sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.iOS }}"
+          sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.os }}"
       - name: Zip simulators
-        if: ${{ matrix.iOS == '15.0' && steps.simulators.outputs.cache-hit != 'true' }}
+        if: ${{ matrix.os == '15.0' && steps.simulators.outputs.cache-hit != 'true' }}
         working-directory: /Library/Developer/CoreSimulator/Profiles/Runtimes
         run: zip -r ~/iOS\ 15.0.simruntime.zip iOS\ 15.0.simruntime
       - name: Checkout
@@ -95,14 +95,21 @@ jobs:
         id: ut
         continue-on-error: true
         run: |
-          if [ ${{ matrix.iOS }} = "15.0" ]; then
+          if [ ${{ matrix.os }} = "15.0" ]; then
             device="iPhone 13 Pro"
           else
             device="iPhone 14 Pro Max"
           fi
+          if [ ${{ matrix.os }} = "macOS" ]; then
+            scheme=MacroTests
+            destination="platform=macOS,arch=arm64,name=My Mac"
+          else
+            scheme=GitHubActionsTests
+            destination="platform=iOS Simulator,name=$device,OS=${{ matrix.os }}"
+          fi
           xcodebuild -workspace GitHubActions.xcworkspace \
-                      -scheme GitHubActionsTests \
-                      -destination "platform=iOS Simulator,name=$device,OS=${{ matrix.iOS }}" \
+                      -scheme $scheme \
+                      -destination "$destination" \
                       -resultBundlePath ~/Lancers.xcresult \
                       -clonedSourcePackagesDirPath ~/SourcePackages \
                       -skipMacroValidation \
@@ -116,7 +123,7 @@ jobs:
       - name: Upload xcresult
         uses: actions/upload-artifact@v4
         with:
-          name: Lancers-iOS${{ matrix.iOS }}-${{ github.run_number }}.xcresult
+          name: Lancers-${{ matrix.os }}-${{ github.run_number }}.xcresult
           path: ~/Lancers.xcresult
   completed:
     runs-on: ubuntu-latest
