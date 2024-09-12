@@ -40,7 +40,7 @@ jobs:
               filter: 'latest'
             });
             const checkRunID = list.data.check_runs[0].id;
-            github.rest.checks.update({
+            await github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               check_run_id: checkRunID,
