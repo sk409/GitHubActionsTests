@@ -75,6 +75,7 @@ jobs:
         os: ["15.0", "16.0", "17.5", "macOS"]
     steps:
       - name: Delete Xcodes
+        # iOS Simulatorのインストール/キャッシュに使用するストレージを確保するため不要なXcodeを削除する。
         run: |
           rm -rf /Applications/Xcode_16.1_beta.app \
                  /Applications/Xcode_16_beta_6.app \
