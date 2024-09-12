@@ -10,7 +10,7 @@ jobs:
     outputs:
       branch: ${{ steps.pr.outputs.branch }}
       sha: ${{ steps.pr.outputs.sha }}
-      checkRunID: ${{ steps.check-run.outputs.result }}
+      check_run_id: ${{ steps.check-run.outputs.result }}
     steps:
       - name: Fetch PR information
         id: pr
@@ -169,11 +169,10 @@ jobs:
 
             conclusion &&= ${{ needs.lint.result == 'success' }}
 
-            const setup = JSON.parse('${{ needs.setup.outputs.result }}')
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: setup.checkRunID,
+              check_run_id: ${{ needs.setup.outputs.check_run_id }},
               status: 'completed',
               conclusion: conclusion ? 'success' : 'failure'
             })
