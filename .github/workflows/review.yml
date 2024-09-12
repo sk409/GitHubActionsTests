@@ -26,27 +26,34 @@ jobs:
         run: |
           pr=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }})
           echo "branch=$(echo $pr | jq -r '.head.ref')" >> "$GITHUB_OUTPUT"
+          echo "sha=$(echo $pr | jq -r '.head.sha')"
       - name: Fetch check run id
         id: check-run
         uses: actions/github-script@v7
         with:
           result-encoding: string
           script: |
-            const list = await github.rest.checks.listForRef({
+            await github.rest.checks.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: '${{ steps.pr.outputs.branch }}',
-              check_name: 'review',
-              filter: 'latest'
-            });
-            const checkRunID = list.data.check_runs[0].id;
-            await github.rest.checks.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              check_run_id: checkRunID,
-              status: 'in_progress'
+              name: 'review',
+              head_sha: ${{ steps.pr.outputs.sha }}
             })
-            return checkRunID
+          # const list = await github.rest.checks.listForRef({
+          #   owner: context.repo.owner,
+          #   repo: context.repo.repo,
+          #   ref: '${{ steps.pr.outputs.branch }}',
+          #   check_name: 'review',
+          #   filter: 'latest'
+          # });
+          # const checkRunID = list.data.check_runs[0].id;
+          # await github.rest.checks.update({
+          #   owner: context.repo.owner,
+          #   repo: context.repo.repo,
+          #   check_run_id: checkRunID,
+          #   status: 'in_progress'
+          # })
+          # return checkRunID
   lint:
     runs-on: macos-14
     needs: [setup]
