@@ -93,7 +93,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/${{ env.simruntime_name }}.zip
-          key: ${{ runner.os }}-iOS-simulator-15.0
+          key: iOS-15.0-simulator
           save-always: true
       - name: Unzip simulators
         if: ${{ matrix.os == '15.0' && steps.simulators.outputs.cache-hit == 'true' }}
@@ -115,9 +115,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/SourcePackages
-          key: ${{ runner.os }}-spm-${{ hashFiles('GitHubActions.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-spm-
+          key: SPM-${{ hashFiles('GitHubActions.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
       - name: UT
         id: ut
         continue-on-error: true
