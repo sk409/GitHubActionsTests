@@ -33,27 +33,21 @@ jobs:
         with:
           result-encoding: string
           script: |
-            await github.rest.checks.create({
+            const list = await github.rest.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: 'review',
-              head_sha: "${{ steps.pr.outputs.sha }}"
+              ref: '${{ steps.pr.outputs.branch }}',
+              check_name: 'review',
+              filter: 'latest'
+            });
+            const checkRunID = list.data.check_runs[0].id;
+            await github.rest.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_run_id: checkRunID,
+              status: 'in_progress'
             })
-          # const list = await github.rest.checks.listForRef({
-          #   owner: context.repo.owner,
-          #   repo: context.repo.repo,
-          #   ref: '${{ steps.pr.outputs.branch }}',
-          #   check_name: 'review',
-          #   filter: 'latest'
-          # });
-          # const checkRunID = list.data.check_runs[0].id;
-          # await github.rest.checks.update({
-          #   owner: context.repo.owner,
-          #   repo: context.repo.repo,
-          #   check_run_id: checkRunID,
-          #   status: 'in_progress'
-          # })
-          # return checkRunID
+            return checkRunID
   lint:
     runs-on: macos-14
     needs: [setup]
