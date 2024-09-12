@@ -28,7 +28,7 @@ jobs:
               status: 'in_progress'
             })
             return JSON.stringify({
-              checkRunID: checkRunID
+              checkRunID
             })
   lint:
     runs-on: macos-14
@@ -114,12 +114,6 @@ jobs:
                       -clonedSourcePackagesDirPath ~/SourcePackages \
                       -skipMacroValidation \
                       test
-          if [ $? -eq 0 ]; then
-            result="success"
-          else
-            result="failure"
-          fi
-          echo "result=$result" >> "$GITHUB_OUTPUT"
       - name: Write test result
         uses: actions/github-script@v7
         with:
@@ -157,7 +151,7 @@ jobs:
             var conclulsion = true
             const results = path.resolve(process.env.HOME, 'results')
             for (const artifact of fs.readdirSync(results)) {
-              const result = fs.readFileSync(path.join(result, artifact, 'result.txt'))
+              const result = fs.readFileSync(path.join(results, artifact, 'result.txt'))
               conclusion &&= (result == 'success')
             }
 
