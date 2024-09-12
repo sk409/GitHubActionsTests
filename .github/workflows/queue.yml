@@ -2,9 +2,8 @@ name: CI
 on:
   pull_request:
     types: [opened, synchronize]
-
 jobs:
-  queue:
+  review:
     name: queue
     runs-on: ubuntu-latest
     steps:
