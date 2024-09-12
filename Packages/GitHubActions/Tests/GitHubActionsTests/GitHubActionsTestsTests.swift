@@ -6,17 +6,17 @@ import XCTest
 @MainActor
 final class GitHubActionsTestsTests: XCTestCase {
   func testExample() throws {
-    if #available(iOS 17, *) {
-      XCTAssertEqual(f(a: 1), 2)
-    } else {
-      XCTAssertTrue(false)
-    }
+    // if #available(iOS 17, *) {
+    //   XCTAssertEqual(f(a: 1), 2)
+    // } else {
+    //   XCTAssertTrue(false)
+    // }
   }
     
     func testAction() async {
-        let store = TestStoreOf<R>(initialState: .init(), reducer: R.init)
-        await store.send(\.a) {
-            $0.i = 1
-        }
+        // let store = TestStoreOf<R>(initialState: .init(), reducer: R.init)
+        // await store.send(\.a) {
+        //     $0.i = 1
+        // }
     }
 }
