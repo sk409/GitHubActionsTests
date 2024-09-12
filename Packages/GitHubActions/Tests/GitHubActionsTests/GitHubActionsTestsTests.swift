@@ -8,8 +8,10 @@ final class GitHubActionsTestsTests: XCTestCase {
   func testExample() throws {
     // if #available(iOS 17, *) {
     //   XCTAssertEqual(f(a: 1), 2)
+    // } else if #available(iOS 16, *) {
+    //   // XCTAssertTrue(false)
     // } else {
-    //   XCTAssertTrue(false)
+    //   //
     // }
   }
 
