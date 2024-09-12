@@ -148,7 +148,7 @@ jobs:
             const fs = require('fs')
             const path = require('path')
             
-            var conclulsion = true
+            var conclusion = true
             const results = path.resolve(process.env.HOME, 'results')
             for (const artifact of fs.readdirSync(results)) {
               const result = fs.readFileSync(path.join(results, artifact, 'result.txt'))
