@@ -159,7 +159,7 @@ jobs:
           path: ${{ env.xcresult_path }}
   completed:
     runs-on: ubuntu-latest
-    if: always()
+    if: success() || failure()
     needs: [setup, lint, ut]
     steps:
       - name: Download test results
