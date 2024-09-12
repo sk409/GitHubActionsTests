@@ -26,7 +26,7 @@ jobs:
         run: |
           pr=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }})
           echo "branch=$(echo $pr | jq -r '.head.ref')" >> "$GITHUB_OUTPUT"
-          echo "sha=$(echo $pr | jq -r '.head.sha')"
+          echo "sha=$(echo $pr | jq -r '.head.sha')" >> "$GITHUB_OUTPUT"
       - name: Fetch check run id
         id: check-run
         uses: actions/github-script@v7
