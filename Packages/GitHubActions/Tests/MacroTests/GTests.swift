@@ -10,6 +10,6 @@ import XCTest
 
 class GTests: XCTest {
   func testG() {
-    XCTAssertEqual(g(1), 2)
+    XCTAssertTrue(false)
   }
 }
