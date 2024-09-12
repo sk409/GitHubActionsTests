@@ -9,7 +9,7 @@ import Macro
 import XCTest
 
 class GTests: XCTest {
-    func testG() {
-        XCTAssertEqual(g(1), 2)
-    }
+  func testG() {
+    XCTAssertEqual(g(1), 2)
+  }
 }

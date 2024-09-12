@@ -12,11 +12,11 @@ final class GitHubActionsTestsTests: XCTestCase {
     //   XCTAssertTrue(false)
     // }
   }
-    
-    func testAction() async {
-        // let store = TestStoreOf<R>(initialState: .init(), reducer: R.init)
-        // await store.send(\.a) {
-        //     $0.i = 1
-        // }
-    }
+
+  func testAction() async {
+    // let store = TestStoreOf<R>(initialState: .init(), reducer: R.init)
+    // await store.send(\.a) {
+    //     $0.i = 1
+    // }
+  }
 }

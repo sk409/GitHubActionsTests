@@ -13,7 +13,9 @@ let package = Package(
       targets: ["GitHubActions"])
   ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", .upToNextMajor(from: "1.14.0"))
+    .package(
+      url: "https://github.com/pointfreeco/swift-composable-architecture",
+      .upToNextMajor(from: "1.14.0"))
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
