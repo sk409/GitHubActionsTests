@@ -66,6 +66,7 @@ jobs:
     needs: [setup]
     env:
       runtimes_directory: /Library/Developer/CoreSimulator/Profiles/Runtimes
+      simruntime_name: iOS\ 15.0.simruntime
     strategy:
       fail-fast: false
       matrix:
@@ -88,21 +89,21 @@ jobs:
         id: simulators
         uses: actions/cache@v4
         with:
-          path: ~/iOS\ 15.0.simruntime.zip
+          path: ~/${{ env.simruntime_name }}.zip
           key: ${{ runner.os }}-iOS-simulator-15.0
           save-always: true
       - name: Unzip simulators
         if: ${{ matrix.os == '15.0' && steps.simulators.outputs.cache-hit == 'true' }}
         run: |
           sudo mkdir -p ${{ env.runtimes_directory }}
-          sudo unzip ~/iOS\ 15.0.simruntime.zip -d ${{ env.runtimes_directory }}
+          sudo unzip ~/${{ env.simruntime_name }}.zip -d ${{ env.runtimes_directory }}
       - name: Install simulators
         if: ${{ (matrix.os == '15.0' || matrix.os == '16.0') && steps.simulators.outputs.cache-hit != 'true' }}
         run: sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.os }}"
       - name: Zip simulators
         if: ${{ matrix.os == '15.0' && steps.simulators.outputs.cache-hit != 'true' }}
         working-directory: ${{ env.runtimes_directory }}
-        run: zip -r ~/iOS\ 15.0.simruntime.zip iOS\ 15.0.simruntime
+        run: zip -r ~/${{ env.simruntime_name }}.zip ${{ env.simruntime_name }}
       - name: Checkout
         uses: actions/checkout@v4
         with:
