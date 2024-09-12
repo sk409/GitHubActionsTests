@@ -9,15 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       branch: ${{ steps.pr.outputs.branch }}
-      sha: ${{ steps.pr.outputs.sha }}
       check_run_id: ${{ steps.check-run.outputs.result }}
     steps:
-      - name: Fetch PR information
+      - name: Fetch branch
         id: pr
         run: |
           pr=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }})
           echo "branch=$(echo $pr | jq -r '.head.ref')" >> "$GITHUB_OUTPUT"
-          echo "sha=$(echo $pr | jq -r '.head.sha')" >> "$GITHUB_OUTPUT"
       - name: Fetch check run id
         id: check-run
         uses: actions/github-script@v7
@@ -43,15 +41,16 @@ jobs:
     runs-on: macos-14
     needs: [setup]
     steps:
+      - name: Install swift-format
+        run: brew install swift-format
       - name: Checkout
         uses: actions/checkout@v4
         with:
           ref: ${{ needs.setup.outputs.branch }}
+      - name: Fetch origin main
+        run: git fetch origin main
       - name: Lint
-        run: |
-          brew install swift-format
-          git fetch origin main
-          swift-format lint -s $(git diff --name-only origin/main..${{ needs.setup.outputs.sha }} | grep .swift$)
+        run: swift-format lint -s $(git diff --name-only origin/main..${{ needs.setup.outputs.branch }} | grep .swift$)
   ut:
     runs-on: macos-14
     needs: [setup]
