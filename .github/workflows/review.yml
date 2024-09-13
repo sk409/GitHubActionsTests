@@ -6,7 +6,7 @@ on:
   #   types: [opened, synchronize]
 jobs:
   setup:
-    if: contains(github.event.comment.html_url, '/pull/'') && 
+    if: contains(github.event.comment.html_url, '/pull/') && 
         github.event.comment.body == '/review'
     runs-on: ubuntu-latest
     outputs:
