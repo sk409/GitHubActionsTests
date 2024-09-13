@@ -96,7 +96,7 @@ jobs:
         # simruntime.zipは5GB以上あるが、GitHubActionsのキャッシュの上限が10GBである。
         # 上記に加えて、iOS 16.0のsimruntimesのダウンロード/インストールはキャッシュから取得するよりも高速であるため、
         # iOS 15.0のみキャッシュする。
-        if: ${{ matrix.os == "15.0" }}
+        if: ${{ matrix.os == '15.0' }}
         id: simulators
         uses: actions/cache@v4
         with:
