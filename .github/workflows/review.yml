@@ -82,89 +82,88 @@ jobs:
       matrix:
         os: ["15.0", "16.0", "17.5", "macOS"]
     steps:
-      - run: date
-      # - name: Delete Xcodes
-      #   # iOS Simulatorのインストール/キャッシュに使用するストレージを確保するため不要なXcodeを削除する。
-      #   run: |
-      #     rm -rf /Applications/Xcode_16.1_beta.app \
-      #            /Applications/Xcode_16_beta_6.app \
-      #            /Applications/Xcode_15.4.app \
-      #            /Applications/Xcode_15.2.app \
-      #            /Applications/Xcode_15.1.app \
-      # - name: Select Xcode
-      #   run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
-      # - name: Cache simulators
-      #   # simruntime.zipは5GB以上あるが、GitHubActionsのキャッシュの上限が10GBである。
-      #   # 上記に加えて、iOS 16.0のsimruntimesのダウンロード/インストールはキャッシュから取得するよりも高速であるため、
-      #   # iOS 15.0のみキャッシュする。
-      #   if: ${{ matrix.os == "15.0" }}
-      #   id: simulators
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ~/${{ env.simruntime_name }}.zip
-      #     key: iOS-15.0-simulator
-      #     save-always: true
-      # - name: Unzip simulators
-      #   if: ${{ matrix.os == "15.0" && steps.simulators.outputs.cache-hit == "true" }}
-      #   run: |
-      #     sudo mkdir -p ${{ env.runtimes_directory }}
-      #     sudo unzip ~/${{ env.simruntime_name }}.zip -d ${{ env.runtimes_directory }}
-      # - name: Install simulators
-      #   if: ${{ (matrix.os == "15.0" || matrix.os == "16.0") && steps.simulators.outputs.cache-hit != "true" }}
-      #   run: sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.os }}"
-      # - name: Zip simulators
-      #   if: ${{ matrix.os == "15.0" && steps.simulators.outputs.cache-hit != "true" }}
-      #   working-directory: ${{ env.runtimes_directory }}
-      #   run: zip -r ~/${{ env.simruntime_name }}.zip ${{ env.simruntime_name }}
-      # - name: Checkout
-      #   uses: actions/checkout@v4
-      #   with:
-      #     ref: ${{ needs.setup.outputs.branch }}
-      # - name: Cache packages
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ~/SourcePackages
-      #     key: SPM-${{ hashFiles("GitHubActions.xcworkspace/xcshareddata/swiftpm/Package.resolved") }}
-      # - name: UT
-      #   id: ut
-      #   continue-on-error: true
-      #   run: |
-      #     if [ ${{ matrix.os }} = "15.0" ]; then
-      #       device="iPhone 13 Pro"
-      #     else
-      #       device="iPhone 14 Pro Max"
-      #     fi
-      #     if [ ${{ matrix.os }} = "macOS" ]; then
-      #       scheme=MacroTests
-      #       destination="platform=macOS,arch=arm64,name=My Mac"
-      #     else
-      #       scheme=GitHubActionsTests
-      #       destination="platform=iOS Simulator,name=$device,OS=${{ matrix.os }}"
-      #     fi
-      #     xcodebuild -workspace GitHubActions.xcworkspace \
-      #                -scheme $scheme \
-      #                -destination "$destination" \
-      #                -resultBundlePath ${{ env.xcresult_path }} \
-      #                -clonedSourcePackagesDirPath ~/SourcePackages \
-      #                -skipMacroValidation \
-      #                test
-      # - name: Write test result
-      #   uses: actions/github-script@v7
-      #   with:
-      #     script: |
-      #       const fs = require("fs")
-      #       const path = require("path")
-      #       fs.writeFileSync(path.join(process.env.HOME, "${{ env.result_file_name }}"), "${{ steps.ut.outcome }}")
-      # - name: Upload test result
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: result-${{ matrix.os }}
-      #     path: ~/${{ env.result_file_name }}
-      # - name: Upload xcresult
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: Lancers-${{ matrix.os }}-${{ github.run_number }}.xcresult
-      #     path: ${{ env.xcresult_path }}
+      - name: Delete Xcodes
+        # iOS Simulatorのインストール/キャッシュに使用するストレージを確保するため不要なXcodeを削除する。
+        run: |
+          rm -rf /Applications/Xcode_16.1_beta.app \
+                 /Applications/Xcode_16_beta_6.app \
+                 /Applications/Xcode_15.4.app \
+                 /Applications/Xcode_15.2.app \
+                 /Applications/Xcode_15.1.app \
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
+      - name: Cache simulators
+        # simruntime.zipは5GB以上あるが、GitHubActionsのキャッシュの上限が10GBである。
+        # 上記に加えて、iOS 16.0のsimruntimesのダウンロード/インストールはキャッシュから取得するよりも高速であるため、
+        # iOS 15.0のみキャッシュする。
+        if: ${{ matrix.os == "15.0" }}
+        id: simulators
+        uses: actions/cache@v4
+        with:
+          path: ~/${{ env.simruntime_name }}.zip
+          key: iOS-15.0-simulator
+          save-always: true
+      - name: Unzip simulators
+        if: ${{ matrix.os == "15.0" && steps.simulators.outputs.cache-hit == "true" }}
+        run: |
+          sudo mkdir -p ${{ env.runtimes_directory }}
+          sudo unzip ~/${{ env.simruntime_name }}.zip -d ${{ env.runtimes_directory }}
+      - name: Install simulators
+        if: ${{ (matrix.os == "15.0" || matrix.os == "16.0") && steps.simulators.outputs.cache-hit != "true" }}
+        run: sudo xcodes runtimes install --keep-archive "iOS ${{ matrix.os }}"
+      - name: Zip simulators
+        if: ${{ matrix.os == "15.0" && steps.simulators.outputs.cache-hit != "true" }}
+        working-directory: ${{ env.runtimes_directory }}
+        run: zip -r ~/${{ env.simruntime_name }}.zip ${{ env.simruntime_name }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.setup.outputs.branch }}
+      - name: Cache packages
+        uses: actions/cache@v4
+        with:
+          path: ~/SourcePackages
+          key: SPM-${{ hashFiles("GitHubActions.xcworkspace/xcshareddata/swiftpm/Package.resolved") }}
+      - name: UT
+        id: ut
+        continue-on-error: true
+        run: |
+          if [ ${{ matrix.os }} = "15.0" ]; then
+            device="iPhone 13 Pro"
+          else
+            device="iPhone 14 Pro Max"
+          fi
+          if [ ${{ matrix.os }} = "macOS" ]; then
+            scheme=MacroTests
+            destination="platform=macOS,arch=arm64,name=My Mac"
+          else
+            scheme=GitHubActionsTests
+            destination="platform=iOS Simulator,name=$device,OS=${{ matrix.os }}"
+          fi
+          xcodebuild -workspace GitHubActions.xcworkspace \
+                     -scheme $scheme \
+                     -destination "$destination" \
+                     -resultBundlePath ${{ env.xcresult_path }} \
+                     -clonedSourcePackagesDirPath ~/SourcePackages \
+                     -skipMacroValidation \
+                     test
+      - name: Write test result
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs")
+            const path = require("path")
+            fs.writeFileSync(path.join(process.env.HOME, "${{ env.result_file_name }}"), "${{ steps.ut.outcome }}")
+      - name: Upload test result
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-${{ matrix.os }}
+          path: ~/${{ env.result_file_name }}
+      - name: Upload xcresult
+        uses: actions/upload-artifact@v4
+        with:
+          name: Lancers-${{ matrix.os }}-${{ github.run_number }}.xcresult
+          path: ${{ env.xcresult_path }}
   completed:
     runs-on: ubuntu-latest
     if: success() || failure()
