@@ -27,8 +27,8 @@ jobs:
       - name: Fetch branch
         id: pr
         run: |
-          pr=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }})
-          echo "branch=$(echo $pr | jq -r '.head.ref')" >> "$GITHUB_OUTPUT"
+          branch=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }} | jq -r '.head.ref')
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
         # echo "branch=${{ github.head_ref }}" >> "$GITHUB_OUTPUT"
       - name: Fetch check run id
         id: check-run
