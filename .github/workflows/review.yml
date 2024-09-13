@@ -123,7 +123,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/SourcePackages
-          key: SPM-${{ hashFiles("GitHubActions.xcworkspace/xcshareddata/swiftpm/Package.resolved") }}
+          key: SPM-${{ hashFiles('GitHubActions.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
       - name: UT
         id: ut
         continue-on-error: true
