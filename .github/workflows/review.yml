@@ -78,6 +78,13 @@ jobs:
       matrix:
         os: ["15.0", "16.0", "17.5", "macOS"]
     steps:
+      - name: Set locale
+        if: ${{ matrix.os == 'macOS' }}
+        # Macrosのエラーメッセージをテストするため日本語に変更する。
+        run: |
+            sudo apt-get install language-pack-ja-base language-pack-ja
+            sudo locale-gen ja_JP.UTF-8
+            sudo update-locale LANG=ja_JP.UTF-8
       - name: Delete Xcodes
         # iOS Simulatorのインストール/キャッシュに使用するストレージを確保するため不要なXcodeを削除する。
         run: |
