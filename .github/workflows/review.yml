@@ -68,7 +68,7 @@ jobs:
           echo "ref=$ref" >> "$GITHUB_OUTPUT"
           git fetch origin $ref
       - name: Lint
-        run: swift-format lint -s $(git diff --name-only ${{ steps.base.outputs.ref }}..${{ needs.setup.outputs.branch }} | grep .swift$)
+        run: swift-format lint -s $(git diff --name-only origin/${{ steps.base.outputs.ref }}..${{ needs.setup.outputs.branch }} | grep .swift$)
   ut:
     runs-on: macos-14
     needs: [setup]
