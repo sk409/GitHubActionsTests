@@ -18,8 +18,8 @@ jobs:
         with:
           script: |
             await github.rest.issues.createComment({
-              // issue_number: ${{ github.event.issue.number }},
-              issue_number: ${{ github.event.number }},
+              issue_number: ${{ github.event.issue.number }},
+              // issue_number: ${{ github.event.number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: "自動レビューを開始しました。\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
