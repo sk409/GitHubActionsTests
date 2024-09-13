@@ -188,7 +188,7 @@ jobs:
               conclusion &&= (result == "success")
             }
 
-            conclusion &&= ${{ needs.lint.result == "success" }}
+            conclusion &&= ${{ needs.lint.result == 'success' }}
 
             github.rest.checks.update({
               owner: context.repo.owner,
