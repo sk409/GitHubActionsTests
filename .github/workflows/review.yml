@@ -66,7 +66,7 @@ jobs:
         run: |
           ref=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }} | jq -r '.base.ref')
           echo "ref=$ref" >> "$GITHUB_OUTPUT"
-          git fetc origin $ref
+          git fetch origin $ref
       - name: Lint
         run: swift-format lint -s $(git diff --name-only ${{ steps.base.ref }}..${{ needs.setup.outputs.branch }} | grep .swift$)
   ut:
