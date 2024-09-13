@@ -80,6 +80,7 @@ jobs:
       matrix:
         os: ["15.0", "16.0", "17.5", "macOS"]
     steps:
+      - run: date
       # - name: Set locale
       #   if: ${{ matrix.os == 'macOS' }}
       #   # Macrosのエラーメッセージをテストするため日本語に変更する。
