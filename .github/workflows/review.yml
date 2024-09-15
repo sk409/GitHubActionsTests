@@ -137,7 +137,7 @@ jobs:
             scheme=MacroTests
             destination="platform=macOS,arch=arm64,name=My Mac"
           else
-            device=$(xcrun simctl list -j devices | jq -r '.devices | with_entries(select(.key | endswith("iOS-16-0")))[][0].name // empty' | tr -d "\n")
+            device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-$(echo ${{ matrix.os }} | sed "s/\./-/")" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
             scheme=GitHubActionsTests
             destination="platform=iOS Simulator,name=$device,OS=${{ matrix.os }}"
           fi
