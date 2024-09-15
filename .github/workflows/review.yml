@@ -137,7 +137,7 @@ jobs:
             scheme=MacroTests
             destination="platform=macOS,arch=arm64,name=My Mac"
           else
-            device=$(xcrun simctl list -j | jq '.runtimes[] | select(.version == "${{ matrix.os }}") | [.supportedDeviceTypes[]|select(.productFamily == "iPhone")][0].name' | tr -d "\n")
+            device=$(xcrun simctl list -j | jq -r '.runtimes[] | select(.version == "${{ matrix.os }}") | [.supportedDeviceTypes[]|select(.productFamily == "iPhone")][0].name' | tr -d "\n")
             scheme=GitHubActionsTests
             destination="platform=iOS Simulator,name=$device,OS=${{ matrix.os }}"
           fi
