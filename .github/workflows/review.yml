@@ -137,7 +137,7 @@ jobs:
             scheme=MacroTests
             destination="platform=macOS,arch=arm64,name=My Mac"
           else
-            while [ -z $device ]; do
+            while [ -z "$device" ]; do
               device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-$(echo ${{ matrix.os }} | sed "s/\./-/")" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
             done
             scheme=GitHubActionsTests
