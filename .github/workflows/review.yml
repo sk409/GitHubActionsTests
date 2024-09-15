@@ -129,15 +129,11 @@ jobs:
         id: ut
         continue-on-error: true
         run: |
-          if [ ${{ matrix.os }} = "15.0" ]; then
-            device="iPhone 13 Pro"
-          else
-            device="iPhone 14 Pro Max"
-          fi
           if [ ${{ matrix.os }} = "macOS" ]; then
             scheme=MacroTests
             destination="platform=macOS,arch=arm64,name=My Mac"
           else
+            device=$(xcrun simctl list -j | jq '.runtimes[] | select(.version == "${{ matrix.os }}") | [.supportedDeviceTypes[]|select(.productFamily == "iPhone")][0].name'> ~/Desktop/sim.json)
             scheme=GitHubActionsTests
             destination="platform=iOS Simulator,name=$device,OS=${{ matrix.os }}"
           fi
