@@ -131,6 +131,8 @@ jobs:
           key: SPM-${{ hashFiles('GitHubActions.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
       - name: Test
         run: xcrun simctl list -j devices
+      - name: Test2
+        run: xcrun simctl list devices
       - name: UT
         id: ut
         continue-on-error: true
