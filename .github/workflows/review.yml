@@ -156,10 +156,12 @@ jobs:
             var conclusion = ${{ needs.lint.result == 'success' }}
 
             if (conclusion) {
-              const results = fs.readdirSync(path.resolve(process.env.HOME, "results"))
-              if results.length == 4 {
-                for (const result of results) {
-                  conclusion &&= "success" == fs.readFileSync(path.join(results, result, "result.txt"))
+              const resultsPath = path.resolve(process.env.HOME, "results")
+              const resultDirs = fs.readdirSync(resultsPath)
+              if resultDirs.length == 4 {
+                for (const resultDir of resultDirs) {
+                  const result = fs.readFileSync(path.join(resultsPath, resultDir, "result.txt"))
+                  conclusion &&= result == "success"
                 }
               } else {
                 conclusion = false
