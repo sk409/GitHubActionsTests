@@ -153,14 +153,18 @@ jobs:
             const fs = require("fs")
             const path = require("path")
             
-            var conclusion = true
-            const results = path.resolve(process.env.HOME, "results")
-            for (const artifact of fs.readdirSync(results)) {
-              const result = fs.readFileSync(path.join(results, artifact, "result.txt"))
-              conclusion &&= (result == "success")
-            }
+            var conclusion = ${{ needs.lint.result == 'success' }}
 
-            conclusion &&= ${{ needs.lint.result == 'success' }}
+            if (conclusion) {
+              const results = fs.readdirSync(path.resolve(process.env.HOME, "results"))
+              if results.length == 4 {
+                for (const result of results) {
+                  conclusion &&= "success" == fs.readFileSync(path.join(results, result, "result.txt"))
+                }
+              } else {
+                conclusion = false
+              }
+            }
 
             await github.rest.checks.update({
               owner: context.repo.owner,
