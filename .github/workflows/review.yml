@@ -63,17 +63,17 @@ jobs:
           ref=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }} | jq -r ".base.ref")
           echo "ref=$ref" >> $GITHUB_OUTPUT
           git fetch origin $ref
+      - name: Files
+        id: files
+        continue-on-error: true
+        run: |
+          files=$(git diff --name-only --diff-filter=d origin/${{ steps.base.outputs.ref }}..${{ needs.setup.outputs.branch }} | grep .swift$)
+          echo "files=$files" >> $GITHUB_OUTPUT 
       - name: Lint
         run: |
-          echo "SSSSS"
-          files=$(git diff --name-only --diff-filter=d origin/${{ steps.base.outputs.ref }}..${{ needs.setup.outputs.branch }} | grep .swift$)
-          echo "$files"
-          if [ -z "$files" ]; then
-            echo "exit"
-            exit 0
+          if [[ ! -z "${{ steps.files.outputs.files }}" ]]; then
+            swift-format lint -s "$fiiles"
           fi
-          echo "format"
-          swift-format lint -s "$fiiles"
   ut:
     runs-on: macos-14
     needs: [setup, lint]
