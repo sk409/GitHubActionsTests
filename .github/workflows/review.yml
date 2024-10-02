@@ -64,7 +64,12 @@ jobs:
           echo "ref=$ref" >> $GITHUB_OUTPUT
           git fetch origin $ref
       - name: Lint
-        run: swift-format lint -s $(git diff --name-only --diff-filter=d origin/${{ steps.base.outputs.ref }}..${{ needs.setup.outputs.branch }} | grep .swift$)
+        run: |
+          files=$(git diff --name-only --diff-filter=d origin/${{ steps.base.outputs.ref }}..${{ needs.setup.outputs.branch }} | grep .swift$)
+          if [ -z $files ]; then
+            exit 0
+          fi
+          swift-format lint -s $fiiles
   ut:
     runs-on: macos-14
     needs: [setup, lint]
