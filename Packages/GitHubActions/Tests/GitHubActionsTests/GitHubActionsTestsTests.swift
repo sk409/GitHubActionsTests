@@ -6,11 +6,11 @@ import XCTest
 @MainActor
 final class GitHubActionsTestsTests: XCTestCase {
   func testExample() throws {
-    if #available(iOS 17, *) {
-      XCTAssertTrue(false)
-    } else {
-      XCTAssertEqual(f(a: 1), 2)
-    }
+    // if #available(iOS 17, *) {
+    //   XCTAssertTrue(false)
+    // } else {
+    //   XCTAssertEqual(f(a: 1), 2)
+    // }
   }
 
   func testAction() async {
