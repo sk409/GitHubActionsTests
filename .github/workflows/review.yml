@@ -65,6 +65,7 @@ jobs:
           git fetch origin $ref
       - name: Lint
         run: |
+          echo "SSSSS"
           files=$(git diff --name-only --diff-filter=d origin/${{ steps.base.outputs.ref }}..${{ needs.setup.outputs.branch }} | grep .swift$)
           echo "$files"
           if [ -z "$files" ]; then
