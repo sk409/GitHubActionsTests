@@ -4,7 +4,7 @@
 import ComposableArchitecture
 
 public func f(a: Int) -> Int {
-  a + 1
+    a + 1
 }
 
 @Reducer
