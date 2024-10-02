@@ -158,7 +158,7 @@ jobs:
             if (conclusion) {
               const resultsPath = path.resolve(process.env.HOME, "results")
               const resultDirs = fs.readdirSync(resultsPath)
-              if resultDirs.length == 4 {
+              if (resultDirs.length == 4) {
                 for (const resultDir of resultDirs) {
                   const result = fs.readFileSync(path.join(resultsPath, resultDir, "result.txt"))
                   conclusion &&= result == "success"
