@@ -1,5 +1,6 @@
 #!/bin/bash
 
+git checkout main
 git push origin main
 git checkout master
 git rebase master
