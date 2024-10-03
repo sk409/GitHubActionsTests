@@ -65,7 +65,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            if ("${{ needs.setup.outputs.base_branch }}" == 'master' && "${{ needs.setup.outputs.topic_branch }}".startsWith("combined/"")) {
+            if ("${{ needs.setup.outputs.base_branch }}" == 'master' && "${{ needs.setup.outputs.topic_branch }}".startsWith("combined/")) {
               await github.rest.checks.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
