@@ -54,7 +54,7 @@ jobs:
             })
             return checkRunID
   lint:
-    if: ${{ needs.setup.outputs.base_branch }} != 'master' || !startsWith(${{ needs.setup.outputs.topic_branch }}), 'combined/')
+    if: ${{ needs.setup.outputs.base_branch != 'master' || !startsWith(${{ needs.setup.outputs.topic_branch }}), 'combined/') }}
     runs-on: macos-14
     needs: [setup]
     steps:
