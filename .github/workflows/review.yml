@@ -73,12 +73,12 @@ jobs:
                 status: "completed",
                 conclusion: "success"
               })
-              return "true"
+              return 'true'
             } else {
-              return "false"
+              return 'false'
             }
   lint:
-    if: ${{ needs.skip_review.outputs.skipped != 'false' }}
+    if: ${{ needs.skip_review.outputs.skipped == 'false' }}
     runs-on: macos-14
     needs: [setup, skip_review]
     steps:
