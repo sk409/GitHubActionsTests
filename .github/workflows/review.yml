@@ -105,7 +105,6 @@ jobs:
     runs-on: macos-14
     needs: [setup, lint]
     env:
-      result_file_name: result.txt
       xcresult_path: ~/GitHubActionsTests.xcresult
     strategy:
       matrix:
@@ -152,19 +151,6 @@ jobs:
                      -skipMacroValidation \
                      -skipPackagePluginValidation \
                      test
-      - name: Write test result
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require("fs")
-            const path = require("path")
-            fs.writeFileSync(path.join(process.env.HOME, "${{ env.result_file_name }}"), "${{ steps.ut.outcome }}")
-      - name: Upload test result
-        uses: actions/upload-artifact@v4
-        with:
-          name: result-${{ matrix.os }}
-          path: ~/${{ env.result_file_name }}
-          retention-days: 1
       - name: Upload xcresult
         uses: actions/upload-artifact@v4
         with:
@@ -184,18 +170,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup, lint, ut]
     steps:
-      - name: Download test results
-        uses: actions/download-artifact@v4
-        with:
-          path: ~/results
-          pattern: result-*
       - name: Completed
         uses: actions/github-script@v7
         with:
           script: |
-            const fs = require("fs")
-            const path = require("path")
-
             await github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
