@@ -90,16 +90,11 @@ jobs:
           ref: ${{ needs.setup.outputs.topic_branch }}
       - name: Fetch base branch
         run: git fetch origin ${{ needs.setup.outputs.base_branch }}
-      - name: Files
-        id: files
-        continue-on-error: true
-        run: |
-          files=$(git diff --name-only --diff-filter=d origin/${{ needs.setup.outputs.base_branch }}..${{ needs.setup.outputs.topic_branch }} | grep .swift$)
-          echo "files=$files" >> $GITHUB_OUTPUT
       - name: Lint
         run: |
-          if [[ ! -z "${{ steps.files.outputs.files }}" ]]; then
-            swift-format lint -s "${{ steps.files.outputs.files }}"
+          files=$(git diff --name-only --diff-filter=d origin/${{ needs.setup.outputs.base_branch }}..${{ needs.setup.outputs.topic_branch }} | grep .swift$)
+          if [[ ! -z "$files" ]]; then
+            swift-format lint -s "$files"
           fi
   ut:
     runs-on: macos-14
