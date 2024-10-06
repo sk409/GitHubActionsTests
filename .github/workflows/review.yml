@@ -1,7 +1,5 @@
 name: Review
-on:
-  pull_request:
-    types: [created]
+on: pull_request
 jobs:
   setup:
     # if: contains(github.event.comment.html_url, '/pull/') && 
