@@ -99,7 +99,7 @@ jobs:
       - name: Lint
         run: |
           if [[ ! -z "${{ steps.files.outputs.files }}" ]]; then
-            swift-format lint -s "$fiiles"
+            swift-format lint -s "${{ steps.files.outputs.files }}"
           fi
   ut:
     runs-on: macos-14
