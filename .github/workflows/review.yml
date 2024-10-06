@@ -93,7 +93,9 @@ jobs:
       - name: Lint
         run: |
           files=$(git diff --name-only --diff-filter=d origin/${{ needs.setup.outputs.base_branch }}..${{ needs.setup.outputs.topic_branch }} | grep .swift$)
+          echo $files
           if [[ ! -z "$files" ]]; then
+            echo "THEN"
             swift-format lint -s "$files"
           fi
   ut:
