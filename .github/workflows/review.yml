@@ -130,7 +130,7 @@ jobs:
           done
           xcodebuild -workspace GitHubActions.xcworkspace \
                      -scheme iOS-Tests \
-                     -destination platform=iOS Simulator,name=$device,OS=15.0 \
+                     -destination "platform=iOS Simulator,name=$device,OS=15.0" \
                      -resultBundlePath ${{ env.xcresult_path }}-iOS15.0 \
                      -clonedSourcePackagesDirPath ~/SourcePackages \
                      -testLanguage ja \
@@ -153,7 +153,7 @@ jobs:
           done
           xcodebuild -workspace GitHubActions.xcworkspace \
                      -scheme iOS-Tests \
-                     -destination platform=iOS Simulator,name=$device,OS=16.0 \
+                     -destination "platform=iOS Simulator,name=$device,OS=16.0" \
                      -resultBundlePath ${{ env.xcresult_path }}-iOS16.0 \
                      -clonedSourcePackagesDirPath ~/SourcePackages \
                      -testLanguage ja \
@@ -176,7 +176,7 @@ jobs:
           done
           xcodebuild -workspace GitHubActions.xcworkspace \
                      -scheme iOS-Tests \
-                     -destination platform=iOS Simulator,name=$device,OS=17.5 \
+                     -destination "platform=iOS Simulator,name=$device,OS=17.5" \
                      -resultBundlePath ${{ env.xcresult_path }}-iOS17.5 \
                      -clonedSourcePackagesDirPath ~/SourcePackages \
                      -testLanguage ja \
