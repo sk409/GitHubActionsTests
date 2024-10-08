@@ -21,7 +21,7 @@ runs:
           scheme=iOS-Tests
           destination="platform=iOS Simulator,name=$device,OS=${{ inputs.os }}"
         fi
-        xcodebuild -workspace lancers_ios_for_lancer.xcworkspace \
+        xcodebuild -workspace GitHubActions.xcworkspace \
                     -scheme $scheme \
                     -destination "$destination" \
                     -resultBundlePath ${{ inputs.xcresult-path }} \
