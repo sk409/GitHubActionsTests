@@ -37,6 +37,7 @@ runs:
         path: ${{ inputs.xcresult-path }}-${{ inputs.os }}
         retention-days: 1
     - name: exit
+      shell: bash
       run: |
         if [ "${{ steps.ut.outcome }}" = "success" ]; then
           exit 0
