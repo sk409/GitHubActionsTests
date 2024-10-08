@@ -1,6 +1,8 @@
 #!/bin/bash
 
 git checkout main
+git add .
+git commit -m "t"
 git push origin main
 git checkout master
 git rebase master
