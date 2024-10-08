@@ -1,9 +1,11 @@
 name: Review
-on: pull_request
+on:
+  issue_comment:
+    types: [created]
 jobs:
   setup:
-    # if: contains(github.event.comment.html_url, '/pull/') && 
-    #     github.event.comment.body == '/review'
+    if: contains(github.event.comment.html_url, '/pull/') && 
+        github.event.comment.body == '/review'
     runs-on: ubuntu-latest
     outputs:
       base_branch: ${{ steps.base-branch.outputs.base_branch }}
@@ -15,7 +17,7 @@ jobs:
         with:
           script: |
             await github.rest.issues.createComment({
-              issue_number: ${{ github.event.number }},
+              issue_number: ${{ github.event.issue.number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: "自動レビューを開始しました。\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
@@ -23,15 +25,13 @@ jobs:
       - name: Fetch topic branch
         id: topic-branch
         run: |
-          # topic_branch=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }} | jq -r ".head.ref")
-          # echo "topic_branch=$topic_branch" >> $GITHUB_OUTPUT
-          echo "topic_branch=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          topic_branch=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }} | jq -r ".head.ref")
+          echo "topic_branch=$topic_branch" >> $GITHUB_OUTPUT
       - name: Fetch base branch
         id: base-branch
         run: |
-          # base_branch=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }} | jq -r ".base.ref")
-          # echo "base_branch=$base_branch" >> $GITHUB_OUTPUT
-          echo "base_branch=${{ github.event.pull_request.base.ref }}" >> $GITHUB_OUTPUT
+          base_branch=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }} | jq -r ".base.ref")
+          echo "base_branch=$base_branch" >> $GITHUB_OUTPUT
       - name: Fetch check run id
         id: check-run
         uses: actions/github-script@v7
