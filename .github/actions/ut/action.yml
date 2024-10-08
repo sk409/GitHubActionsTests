@@ -1,0 +1,37 @@
+inputs:
+  os:
+    required: true
+  xcresult-path:
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: ut
+      shell: bash
+      run: |
+        if [ ${{ inputs.os }} = "macOS" ]; then
+          scheme=Mac-Tests
+          destination="platform=macOS,arch=arm64,name=My Mac"
+        else
+          while [ -z "$device" ]; do
+            sleep 0.5
+            device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-$(echo ${{ inputs.os }} | sed "s/\./-/")" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
+          done
+          scheme=iOS-Tests
+          destination="platform=iOS Simulator,name=$device,OS=${{ inputs.os }}"
+        fi
+        xcodebuild -workspace lancers_ios_for_lancer.xcworkspace \
+                    -scheme $scheme \
+                    -destination "$destination" \
+                    -resultBundlePath ${{ inputs.xcresult-path }} \
+                    -clonedSourcePackagesDirPath ~/SourcePackages \
+                    -testLanguage ja \
+                    -skipMacroValidation \
+                    -skipPackagePluginValidation \
+                    test
+    - name: Upload xcresult
+      uses: actions/upload-artifact@v4
+      with:
+        name: GitHubActionsTests-${{ inputs.os }}-${{ github.run_number }}.xcresult
+        path: ${{ inputs.xcresult-path }}-${{ inputs.os }}
+        retention-days: 1

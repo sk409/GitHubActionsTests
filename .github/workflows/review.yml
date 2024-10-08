@@ -123,91 +123,31 @@ jobs:
       - name: iOS15
         id: iOS15
         continue-on-error: true
-        run: |
-          while [ -z "$device" ]; do
-            sleep 0.5
-            device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-15-0" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
-          done
-          xcodebuild -workspace GitHubActions.xcworkspace \
-                     -scheme iOS-Tests \
-                     -destination "platform=iOS Simulator,name=$device,OS=15.0" \
-                     -resultBundlePath ${{ env.xcresult_path }}-iOS15.0 \
-                     -clonedSourcePackagesDirPath ~/SourcePackages \
-                     -testLanguage ja \
-                     -skipMacroValidation \
-                     -skipPackagePluginValidation \
-                     test
-      - name: Upload iOS 15.0 xcresult
-        uses: actions/upload-artifact@v4
-        with:
-          name: GitHubActionsTests-iOS15.0-${{ github.run_number }}.xcresult
-          path: ${{ env.xcresult_path }}-iOS15.0
-          retention-days: 1
+        uses: ./.github/actions/ut
+          with:
+            os: 15.0
+            xcresult-path: ${{ env.xcresult_path }}
       - name: iOS16
         id: iOS16
         continue-on-error: true
-        run: |
-          while [ -z "$device" ]; do
-            sleep 0.5
-            device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-16-0" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
-          done
-          xcodebuild -workspace GitHubActions.xcworkspace \
-                     -scheme iOS-Tests \
-                     -destination "platform=iOS Simulator,name=$device,OS=16.0" \
-                     -resultBundlePath ${{ env.xcresult_path }}-iOS16.0 \
-                     -clonedSourcePackagesDirPath ~/SourcePackages \
-                     -testLanguage ja \
-                     -skipMacroValidation \
-                     -skipPackagePluginValidation \
-                     test
-      - name: Upload iOS 16.0 xcresult
-        uses: actions/upload-artifact@v4
-        with:
-          name: GitHubActionsTests-iOS16.0-${{ github.run_number }}.xcresult
-          path: ${{ env.xcresult_path }}-iOS16.0
-          retention-days: 1
+        uses: ./.github/actions/ut
+          with:
+            os: 16.0
+            xcresult-path: ${{ env.xcresult_path }}
       - name: iOS17
         id: iOS17
         continue-on-error: true
-        run: |
-          while [ -z "$device" ]; do
-            sleep 0.5
-            device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-17-5" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
-          done
-          xcodebuild -workspace GitHubActions.xcworkspace \
-                     -scheme iOS-Tests \
-                     -destination "platform=iOS Simulator,name=$device,OS=17.5" \
-                     -resultBundlePath ${{ env.xcresult_path }}-iOS17.5 \
-                     -clonedSourcePackagesDirPath ~/SourcePackages \
-                     -testLanguage ja \
-                     -skipMacroValidation \
-                     -skipPackagePluginValidation \
-                     test
-      - name: Upload iOS 17.5 xcresult
-        uses: actions/upload-artifact@v4
-        with:
-          name: GitHubActionsTests-iOS17.5-${{ github.run_number }}.xcresult
-          path: ${{ env.xcresult_path }}-iOS17.5
-          retention-days: 1
+        uses: ./.github/actions/ut
+          with:
+            os: 17.5
+            xcresult-path: ${{ env.xcresult_path }}
       - name: macOS
         id: macOS
         continue-on-error: true
-        run: |
-          xcodebuild -workspace GitHubActions.xcworkspace \
-                     -scheme Mac-Tests \
-                     -destination "platform=macOS,arch=arm64,name=My Mac" \
-                     -resultBundlePath ${{ env.xcresult_path }}-macOS \
-                     -clonedSourcePackagesDirPath ~/SourcePackages \
-                     -testLanguage ja \
-                     -skipMacroValidation \
-                     -skipPackagePluginValidation \
-                     test
-      - name: Upload macOS xcresult
-        uses: actions/upload-artifact@v4
-        with:
-          name: GitHubActionsTests-macOS-${{ github.run_number }}.xcresult
-          path: ${{ env.xcresult_path }}-macOS
-          retention-days: 1
+        uses: ./.github/actions/ut
+          with:
+            os: macOS
+            xcresult-path: ${{ env.xcresult_path }}
       - name: exit
         run: |
           if [ "${{ steps.iOS15.outcome }}" = "success" ] &&
