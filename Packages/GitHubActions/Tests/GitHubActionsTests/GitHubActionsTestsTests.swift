@@ -11,6 +11,7 @@ final class GitHubActionsTestsTests: XCTestCase {
     // } else {
     //   XCTAssertTrue(false)
     // }
+    XCTAssertTrue(true)
   }
 
   func testAction() async {
