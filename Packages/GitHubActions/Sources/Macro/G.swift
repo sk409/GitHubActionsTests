@@ -8,5 +8,5 @@
 import Foundation
 
 public func g(_ i: Int) -> Int {
-      i + 1
+  i + 1
 }
