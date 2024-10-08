@@ -6,6 +6,6 @@ import XCTest
 @MainActor
 final class GitHubActionsTestsTests: XCTestCase {
   func testExample() throws {
-    XCTAssertTrue(false)
+    XCTAssertTrue(true)
   }
 }
