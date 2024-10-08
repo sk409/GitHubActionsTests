@@ -126,7 +126,7 @@ jobs:
         run: |
           while [ -z "$device" ]; do
             sleep 0.5
-            device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-15.0" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
+            device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-15-0" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
           done
           xcodebuild -workspace GitHubActions.xcworkspace \
                      -scheme iOS-Tests \
@@ -149,7 +149,7 @@ jobs:
         run: |
           while [ -z "$device" ]; do
             sleep 0.5
-            device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-16.0" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
+            device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-16-0" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
           done
           xcodebuild -workspace GitHubActions.xcworkspace \
                      -scheme iOS-Tests \
@@ -172,7 +172,7 @@ jobs:
         run: |
           while [ -z "$device" ]; do
             sleep 0.5
-            device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-17.5" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
+            device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-17-5" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
           done
           xcodebuild -workspace GitHubActions.xcworkspace \
                      -scheme iOS-Tests \
