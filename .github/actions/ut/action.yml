@@ -7,6 +7,7 @@ runs:
   using: "composite"
   steps:
     - name: ut
+      id: ut
       shell: bash
       run: |
         if [ ${{ inputs.os }} = "macOS" ]; then
@@ -35,3 +36,10 @@ runs:
         name: GitHubActionsTests-${{ inputs.os }}-${{ github.run_number }}.xcresult
         path: ${{ inputs.xcresult-path }}-${{ inputs.os }}
         retention-days: 1
+    - name: exit
+      run: |
+        if [ "${{ steps.ut.outcome }}" = "success" ]; then
+          exit 0
+        else
+          exit 1
+        fi
