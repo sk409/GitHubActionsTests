@@ -210,7 +210,11 @@ jobs:
           retention-days: 1
       - name: exit
         run: |
-          if [ "${{ steps.ut.outcome }}" = "success" ]; then
+          if [ "${{ steps.iOS15.outcome }}" = "success" ] &&
+             [ "${{ steps.iOS16.outcome }}" = "success" ] &&
+             [ "${{ steps.iOS17.outcome }}" = "success" ] &&
+             [ "${{ steps.macOS.outcome }}" = "success" ];
+          then
             exit 0
           else
             exit 1
