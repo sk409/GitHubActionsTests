@@ -1,8 +1,6 @@
 inputs:
   os:
     required: true
-  xcresult-path:
-    required: true
 runs:
   using: "composite"
   steps:
