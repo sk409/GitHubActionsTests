@@ -24,7 +24,7 @@ runs:
         xcodebuild -workspace GitHubActions.xcworkspace \
                     -scheme $scheme \
                     -destination "$destination" \
-                    -resultBundlePath ${{ inputs.xcresult-path }} \
+                    -resultBundlePath ~/GitHubActionsTests-${{ inputs.os }}.xcresult \
                     -clonedSourcePackagesDirPath ~/SourcePackages \
                     -testLanguage ja \
                     -skipMacroValidation \
@@ -34,7 +34,7 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: GitHubActionsTests-${{ inputs.os }}-${{ github.run_number }}.xcresult
-        path: ${{ inputs.xcresult-path }}-${{ inputs.os }}
+        path: ~/GitHubActionsTests-${{ inputs.os }}.xcresult
         retention-days: 1
     - name: exit
       shell: bash

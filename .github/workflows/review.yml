@@ -99,8 +99,6 @@ jobs:
   ut:
     runs-on: macos-14
     needs: [setup, lint]
-    env:
-      xcresult_path: ~/GitHubActionsTests.xcresult
     steps:
       - name: Delete Xcodes
         # Simulatorのインストールに使用するストレージを確保するため不要なXcodeを削除する。
@@ -126,28 +124,24 @@ jobs:
         uses: ./.github/actions/ut
         with:
           os: "15.0"
-          xcresult-path: ${{ env.xcresult_path }}
       - name: iOS16
         id: iOS16
         continue-on-error: true
         uses: ./.github/actions/ut
         with:
           os: "16.0"
-          xcresult-path: ${{ env.xcresult_path }}
       - name: iOS17
         id: iOS17
         continue-on-error: true
         uses: ./.github/actions/ut
         with:
           os: "17.5"
-          xcresult-path: ${{ env.xcresult_path }}
       - name: macOS
         id: macOS
         continue-on-error: true
         uses: ./.github/actions/ut
         with:
           os: "macOS"
-          xcresult-path: ${{ env.xcresult_path }}
       - name: exit
         run: |
           if [ "${{ steps.iOS15.outcome }}" = "success" ] &&
