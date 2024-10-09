@@ -105,10 +105,18 @@ jobs:
         run: rm -rf /Applications/Xcode_16.1_beta.app /Applications/Xcode_14.3.1.app
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
-      - name: Install iOS 15.0 simulators
-        run: sudo xcodes runtimes install "iOS 15.0"
-      - name: Install iOS 16.0 simulators
-        run: sudo xcodes runtimes install "iOS 16.0"
+      - name: Install iOS simulators
+        run: |
+          wait () {
+            while [ -z "$device" ]; do
+                sleep 0.5
+                device=$(xcrun simctl list -j devices | jq -r --arg os "iOS-$1" '.devices | with_entries(select(.key | endswith($os)))[][0].name // empty' | tr -d "\n")
+            done
+          }
+          sudo xcodes runtimes install "iOS 15.0" &
+          sudo xcodes runtimes install "iOS 16.0" &
+          wait 15-0
+          wait 16-0
       - name: Checkout
         uses: actions/checkout@v4
         with:
