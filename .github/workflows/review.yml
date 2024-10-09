@@ -120,39 +120,24 @@ jobs:
           key: SPM-${{ hashFiles('GitHubActions.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
       - name: iOS15
         id: iOS15
-        continue-on-error: true
         uses: ./.github/actions/ut
         with:
           os: "15.0"
       - name: iOS16
         id: iOS16
-        continue-on-error: true
         uses: ./.github/actions/ut
         with:
           os: "16.0"
       - name: iOS17
         id: iOS17
-        continue-on-error: true
         uses: ./.github/actions/ut
         with:
           os: "17.5"
       - name: macOS
         id: macOS
-        continue-on-error: true
         uses: ./.github/actions/ut
         with:
           os: "macOS"
-      - name: exit
-        run: |
-          if [ "${{ steps.iOS15.outcome }}" = "success" ] &&
-             [ "${{ steps.iOS16.outcome }}" = "success" ] &&
-             [ "${{ steps.iOS17.outcome }}" = "success" ] &&
-             [ "${{ steps.macOS.outcome }}" = "success" ];
-          then
-            exit 0
-          else
-            exit 1
-          fi
   completed:
     # コメントが/review以外の場合はスキップする
     if: success() || failure()

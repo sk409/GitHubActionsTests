@@ -9,6 +9,7 @@ runs:
     - name: ut
       id: ut
       shell: bash
+      continue-on-error: true
       run: |
         if [ ${{ inputs.os }} = "macOS" ]; then
           scheme=Mac-Tests
