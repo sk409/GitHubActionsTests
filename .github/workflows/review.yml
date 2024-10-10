@@ -119,22 +119,18 @@ jobs:
           path: ~/SourcePackages
           key: SPM-${{ hashFiles('GitHubActions.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
       - name: iOS17
-        id: iOS17
         uses: ./.github/actions/ut
         with:
           os: "17.5"
       - name: macOS
-        id: macOS
         uses: ./.github/actions/ut
         with:
           os: "macOS"
       - name: iOS16
-        id: iOS16
         uses: ./.github/actions/ut
         with:
           os: "16.0"
       - name: iOS15
-        id: iOS15
         uses: ./.github/actions/ut
         with:
           os: "15.0"
