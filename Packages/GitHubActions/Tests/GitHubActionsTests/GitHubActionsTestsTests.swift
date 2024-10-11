@@ -7,9 +7,9 @@ import XCTest
 final class GitHubActionsTestsTests: XCTestCase {
   func testExample() throws {
     if #available(iOS 17, *) {
-      XCTAssertTrue(true)
-    } else {
       XCTAssertTrue(false)
+    } else {
+      XCTAssertTrue(true)
     }
   }
 }
