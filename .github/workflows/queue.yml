@@ -15,5 +15,5 @@ jobs:
               repo: context.repo.repo,
               name: 'review',
               head_sha: '${{ github.event.pull_request.head.sha }}',
-              status: 'queued'
+              status: 'in_progress'
             })
